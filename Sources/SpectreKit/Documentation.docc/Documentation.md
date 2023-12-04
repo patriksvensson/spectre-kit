@@ -1,3 +1,3 @@
-# SpectreKit
+# ``SpectreKit``
 
-Framework to make beautiful terminal applications using the Swift Programming Language.
+A Swift framework that makes it easier to create beautiful console applications.

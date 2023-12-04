@@ -1,3 +1,4 @@
+/// Represents color and text decorations.
 public struct Style: Equatable {
     public let foreground: Color?
     public let background: Color?
@@ -12,6 +13,8 @@ public struct Style: Equatable {
     }
 }
 
+/// Represents text decoration.
+/// Support for text decorations are up to the terminal.
 public struct Decoration: OptionSet {
     public let rawValue: Int
 
@@ -30,6 +33,7 @@ public struct Decoration: OptionSet {
     public static let strikethrough = Decoration(rawValue: 1 << 8)
 }
 
+/// Represents a color system.
 public enum ColorSystem: Int {
     case noColor
     case threeBit
@@ -38,6 +42,7 @@ public enum ColorSystem: Int {
     case trueColor
 }
 
+/// Represents a color
 public struct Color: Equatable {
     let number: UInt8?
     public let r: UInt8
