@@ -1,3 +1,5 @@
+import Foundation
+
 /// Represents color and text decorations.
 public struct Style: Equatable {
     public let foreground: Color?
@@ -33,58 +35,79 @@ public struct Decoration: OptionSet {
     public static let strikethrough = Decoration(rawValue: 1 << 8)
 }
 
-/// Represents a color system.
-public enum ColorSystem: Int {
-    case noColor
-    case threeBit
-    case fourBit
+/// Represents a color system
+public enum ColorSystem {
+    case standard
     case eightBit
     case trueColor
 }
 
 /// Represents a color
-public struct Color: Equatable {
-    let number: UInt8?
-    public let r: UInt8
-    public let g: UInt8
-    public let b: UInt8
-        
-    init(number: UInt8?, r: UInt8, g: UInt8, b: UInt8) {
-        self.number = number
-        self.r = r
-        self.g = g
-        self.b = b
+public enum Color: Equatable {
+    case `default`
+    case number(UInt8)
+    case rgb(UInt8, UInt8, UInt8)
+    
+    public var isDefault: Bool {
+        return switch self {
+        case .default: true
+        default: false
+        }
     }
     
-    /// Creates a new Color instance using RGB values
-    /// - Parameters:
-    ///   - r: The red component value
-    ///   - g: The green component value
-    ///   - b: The blur component value
-    public init(r: UInt8, g: UInt8, b: UInt8) {
-        self.number = nil
-        self.r = r
-        self.g = g
-        self.b = b
+    public var system: ColorSystem {
+        return switch self {
+        case .default: ColorSystem.standard
+        case let .number(number):
+            switch number {
+            case 0...15: ColorSystem.standard
+            default: ColorSystem.eightBit
+            }
+        case .rgb(_,_,_): ColorSystem.trueColor
+        }
     }
-    
-    /// Creates a new Color instance from an xterm number
-    /// - Parameter number: The xterm number
-    /// - Returns: A new Color instance
-    public static func fromNumber(number: UInt8) -> Color {
-        ColorTable.getColor(number: number)
-    }
-    
-    func getDistance(other: Color) -> Double {
-        let rmean: Float = Float(other.r + self.r) / 2
-        let r = Float(other.r - self.r)
-        let g = Float(other.g - self.g)
-        let b = Float(other.b - self.b)
 
-        // TODO: Clean this up
-        let a1 = (Int(((Float(512) + rmean) * r * r)) >> 8)
-        let a2 = (4 * g * g)
-        let a3 = (Int)((Float(767) - rmean) * b * b) >> 8
-        return Double(Float(a1) + a2 + Float(a3))
+    public func downgrade(to: ColorSystem) -> Color {
+        if !self.isDefault {
+            switch to {
+            case .standard:
+                if system != .standard {
+                    return downgrade(to: .standard, triplet: getTriplet())
+                }
+            case .eightBit:
+                if system != .standard && system != .eightBit {
+                    return downgrade(to: .eightBit, triplet: getTriplet())
+                }
+            case ColorSystem.trueColor:
+                if system != .trueColor {
+                    guard let (r, g, b) = getTriplet() else {
+                        return self
+                    }
+                    return Color.rgb(r, g, b)
+                }
+            }
+        }
+        
+        return self
+    }
+    
+    func downgrade(to: ColorSystem, triplet: (UInt8, UInt8, UInt8)?) -> Color {
+        guard let triplet = triplet else {
+            return self
+        }
+
+        let colorNumber = ColorPalette.getNumber(system: to, color: triplet)
+        guard let colorNumber else {
+            fatalError("Could not get closest color")
+        }
+        return Color.number(colorNumber)
+    }
+    
+    func getTriplet() -> (UInt8, UInt8, UInt8)? {
+        return switch self {
+        case let .rgb(r, g, b): (r, g, b)
+        case let .number(number): ColorPalette.eightBit[safe: Int(number)]
+        default: nil
+        }
     }
 }
