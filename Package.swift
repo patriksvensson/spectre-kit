@@ -12,7 +12,7 @@ let package = Package(
             targets: ["SpectreKit"]),
         .executable(
             name: "Example",
-            targets: ["Example"])
+            targets: ["Example"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
@@ -27,6 +27,6 @@ let package = Package(
             dependencies: ["SpectreKit"]),
         .executableTarget(
             name: "Example",
-            dependencies: ["SpectreKit"])
+            dependencies: ["SpectreKit"]),
     ]
 )
