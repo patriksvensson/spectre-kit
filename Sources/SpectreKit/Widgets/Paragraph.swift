@@ -1,19 +1,18 @@
 import Foundation
 
+///////////////////////////////////////////////////////////////////////////////
+// Paragraph
+
 /// Widget that renders styled text and auto wraps at line breaks as needed.
 public struct Paragraph: Renderable {
     private var lines: [SegmentLine]
 
-    /**
-     * Gets the number of lines in the paragraph.
-     */
+    // Gets the number of lines in the paragraph.
     var lineCount: Int {
         return lines.count
     }
 
-    /**
-     * Gets the number of characters in the paragraph.
-     */
+    /// Gets the number of characters in the paragraph.
     var characterCount: Int {
         lines.reduce(0) {
             $0 + $1.characterCount
@@ -28,7 +27,7 @@ public struct Paragraph: Renderable {
         self.lines = []
         self.append(text: text, style: style)
     }
-    
+
     /// Appends text with an optional style to the paragraph.
     /// - Parameters:
     ///   - text: The text to add
@@ -57,7 +56,7 @@ public struct Paragraph: Renderable {
                 if self.lines.last == nil {
                     self.lines.append(line)
                 } else {
-                    self.lines.indices.last.map{ lines[$0] = line }
+                    self.lines.indices.last.map { lines[$0] = line }
                 }
             } else {
                 var line = SegmentLine()
@@ -130,7 +129,7 @@ public struct Paragraph: Renderable {
         }
 
         var lines: [SegmentLine] = []
-        var line =  SegmentLine()
+        var line = SegmentLine()
 
         var iterator = SegmentLineIterator(lines: self.lines)
         var queue = Queue<Segment>()
@@ -210,7 +209,7 @@ public struct Paragraph: Renderable {
 
         return lines
     }
-    
+
     mutating func addNewLine() -> SegmentLine {
         let line = SegmentLine()
         self.lines.append(line)

@@ -8,7 +8,7 @@ extension Sequence {
     func makePeekable() -> PeekableIterator<Self.Iterator> {
         return .init(iterator: makeIterator())
     }
-    
+
     func firstOrDefault(_ fn: (Element) -> Bool) -> Element? {
         for item in self {
             if fn(item) {

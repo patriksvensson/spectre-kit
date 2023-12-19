@@ -5,6 +5,9 @@ all:
 	@echo "   - build-docs: Builds the documentation"
 	@echo "   - preview-docs: Start local web server serving the documentation"
 
+lint:
+	swift-format lint ./Sources/SpectreKit --recursive
+
 build-docs:
 	GENERATE_DOCS=1 swift package --allow-writing-to-directory $(ODOCS) generate-documentation --target SpectreKit --disable-indexing --transform-for-static-hosting --hosting-base-path / --emit-digest --output-path $(ODOCS) >& build-docs.log
 

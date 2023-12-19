@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import SpectreKit
 
 final class StringTests: XCTestCase {
@@ -20,7 +21,7 @@ final class StringTests: XCTestCase {
         XCTAssertEqual(result[0], "Hello")
         XCTAssertEqual(result[1], "World!")
     }
-    
+
     func testIfStringIsEmpty() {
         // With spaces
         XCTAssertEqual("   ".isWhitespace(), true)

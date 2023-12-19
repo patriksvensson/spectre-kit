@@ -1,3 +1,6 @@
+///////////////////////////////////////////////////////////////////////////////
+// Segment
+
 /// Represents a segment of text, whitespace, line breaks,
 /// or terminal control sequences
 public enum Segment: Equatable {
@@ -6,17 +9,17 @@ public enum Segment: Equatable {
 
     /// A linebreak segment.
     case lineBreak
-    
+
     /// A segment containing whitespace.
     /// - Parameters:
     ///   - content: The whitespace content.
     case whitespace(content: String)
-    
+
     /// A segment containing a control sequence code.
     /// - Parameters:
     ///   - code: The control sequence code
     case controlSequence(code: String)
-    
+
     /// A segment containing text with an optional style.
     /// - Parameters:
     ///   - content: The text content.
@@ -25,14 +28,14 @@ public enum Segment: Equatable {
 
     var characterCount: Int {
         switch self {
-            case let .controlSequence(text): text.count
-            case let .text(text, _): text.count
-            case let .whitespace(text): text.count
-            case .empty: 0
-            case .lineBreak: 1
+        case let .controlSequence(text): text.count
+        case let .text(text, _): text.count
+        case let .whitespace(text): text.count
+        case .empty: 0
+        case .lineBreak: 1
         }
     }
-    
+
     var cellCount: Int {
         // TODO: Implement
         return characterCount
@@ -40,39 +43,39 @@ public enum Segment: Equatable {
 
     var isLineBreak: Bool {
         switch self {
-            case .lineBreak: true
-            default: false
+        case .lineBreak: true
+        default: false
         }
     }
 
     var isWhitespace: Bool {
         switch self {
-            case .whitespace: true
-            default: false
+        case .whitespace: true
+        default: false
         }
     }
 
     var isControlCode: Bool {
         switch self {
-            case .controlSequence: true
-            default: false
+        case .controlSequence: true
+        default: false
         }
     }
 
     func getText() -> String? {
         switch self {
-            case let .controlSequence(value): value
-            case .lineBreak: "\n"
-            case let .text(value, _): value
-            case let .whitespace(value): value
-            default: nil
+        case let .controlSequence(value): value
+        case .lineBreak: "\n"
+        case let .text(value, _): value
+        case let .whitespace(value): value
+        default: nil
         }
     }
 
     func getStyle() -> Style {
         switch self {
-            case let .text(_, style): style ?? Style.plain
-            default: Style.plain
+        case let .text(_, style): style ?? Style.plain
+        default: Style.plain
         }
     }
 
@@ -87,22 +90,27 @@ public enum Segment: Equatable {
             result.append(Segment.empty)
         } else {
             switch self {
-                case .controlSequence:
-                    result.append(self)
-                case let .text(text, style):
-                    result.append(Segment.text(
+            case .controlSequence:
+                result.append(self)
+            case let .text(text, style):
+                result.append(
+                    Segment.text(
                         content: text.substring(end: maxWidth), style: style))
-                case let .whitespace(text):
-                    result.append(Segment.whitespace(
+            case let .whitespace(text):
+                result.append(
+                    Segment.whitespace(
                         content: text.substring(end: maxWidth)))
-                default:
-                    break
+            default:
+                break
             }
         }
 
         return result
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// SegmentLine
 
 /// Represents a line of terminal segments.
 public struct SegmentLine {
@@ -121,7 +129,7 @@ public struct SegmentLine {
             $0 + $1.characterCount
         }
     }
-    
+
     var cellCount: Int {
         return segments.reduce(0) {
             $0 + $1.cellCount
@@ -166,10 +174,11 @@ public struct SegmentLineIterator: IteratorProtocol, Sequence {
                     // Only emit a line break if the next one isn't a line break.
                     if (currentLine + 1 <= lines.count - 1)
                         && lines[currentLine + 1].count > 0
-                        && !lines[currentLine + 1].segments[0].isLineBreak {
-                            lineBreakEmitted = true
-                            return Segment.lineBreak
-                        }
+                        && !lines[currentLine + 1].segments[0].isLineBreak
+                    {
+                        lineBreakEmitted = true
+                        return Segment.lineBreak
+                    }
                 }
             }
 

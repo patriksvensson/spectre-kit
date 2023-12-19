@@ -1,0 +1,14 @@
+disabled_rules: # rule identifiers turned on by default to exclude from running
+  - large_tuple
+  - switch_case_alignment
+  - cyclomatic_complexity
+  - identifier_name
+  - line_length
+  - function_body_length
+  - force_try
+  - trailing_comma
+  - type_body_length
+  - private_over_fileprivate
+  - opening_brace
+  - for_where
+  - file_length

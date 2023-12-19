@@ -1,3 +1,6 @@
+///////////////////////////////////////////////////////////////////////////////
+// SequenceIterator
+
 struct SequenceIterator<T: IteratorProtocol>: IteratorProtocol, Sequence {
     public typealias Element = (index: Int, isFirst: Bool, isLast: Bool, item: T.Element)
 
@@ -28,9 +31,13 @@ struct SequenceIterator<T: IteratorProtocol>: IteratorProtocol, Sequence {
             index: self.index,
             isFirst: self.isFirst,
             isLast: next == nil,
-            item: current)
+            item: current
+        )
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// PeekableIterator
 
 struct PeekableIterator<T: IteratorProtocol>: IteratorProtocol, Sequence {
     public typealias Element = T.Element
