@@ -2,6 +2,7 @@ ODOCS=./Documentation
 
 all:
 	@echo "Targets:"
+	@echo "   - lint: Performs linting"
 	@echo "   - build-docs: Builds the documentation"
 	@echo "   - preview-docs: Start local web server serving the documentation"
 
