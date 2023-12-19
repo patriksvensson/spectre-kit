@@ -227,9 +227,11 @@ fileprivate struct MarkupTokenizer {
             if current == "]" {
                 if encounteredClosing {
                     self.buffer.consume()
-                    encounteredClosing = true
+                    encounteredClosing = false
                     continue
                 }
+
+                encounteredClosing = true
             } else {
                 if encounteredClosing {
                     throw MarkupError.unescaped(position: position)
