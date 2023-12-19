@@ -1,10 +1,11 @@
 import XCTest
+
 @testable import SpectreKit
 
 final class ParagraphTests: XCTestCase {
     func testMeasurement() throws {
         // Given
-        let paragraph = Paragraph.init(text: "Hello World\nGoodbye World")
+        let paragraph = Paragraph(text: "Hello World\nGoodbye World")
         // When
         let result = paragraph.measure(options: RenderOptions(), maxWidth: 80)
         // Then
@@ -14,7 +15,7 @@ final class ParagraphTests: XCTestCase {
 
     func testRender() throws {
         // Given
-        let paragraph = Paragraph.init(text: "Hello World\nGoodbye World")
+        let paragraph = Paragraph(text: "Hello World\nGoodbye World")
 
         // When
         let result = paragraph.render(options: RenderOptions(), maxWidth: 80)

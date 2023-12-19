@@ -3,7 +3,7 @@ extension String {
     func substring(end: Int) -> String {
         self.substring(to: self.index(self.startIndex, offsetBy: end))
     }
-    
+
     func isWhitespace() -> Bool {
         for character in self {
             if !character.isWhitespace {
@@ -18,13 +18,16 @@ extension String {
     }
 
     func splitLines() -> [String] {
-        return self
+        return
+            self
             .normalizeNewLines()
             .components(separatedBy: "\n")
     }
 
     func splitWords(options: SplitOptions = SplitOptions.none) -> [String] {
-        func read(peekable: inout PeekableIterator<String.Iterator>, criteria: (Character) -> Bool) -> String {
+        func read(peekable: inout PeekableIterator<String.Iterator>, criteria: (Character) -> Bool)
+            -> String
+        {
             var accumulator: [Character] = []
             while !peekable.reachedEnd {
                 guard let current = peekable.peek() else {
@@ -36,7 +39,7 @@ extension String {
                 }
 
                 accumulator.append(current)
-                _ = peekable.next() // Consume
+                _ = peekable.next()  // Consume
             }
             return String(accumulator)
         }
@@ -70,6 +73,34 @@ extension String {
         }
 
         return result
+    }
+}
+
+extension StringProtocol {
+    subscript(offset: Int) -> Character {
+        self[index(startIndex, offsetBy: offset)]
+    }
+
+    subscript(range: Range<Int>) -> SubSequence {
+        let startIndex = index(self.startIndex, offsetBy: range.lowerBound)
+        return self[startIndex..<index(startIndex, offsetBy: range.count)]
+    }
+
+    subscript(range: ClosedRange<Int>) -> SubSequence {
+        let startIndex = index(self.startIndex, offsetBy: range.lowerBound)
+        return self[startIndex..<index(startIndex, offsetBy: range.count)]
+    }
+
+    subscript(range: PartialRangeFrom<Int>) -> SubSequence {
+        self[index(startIndex, offsetBy: range.lowerBound)...]
+    }
+
+    subscript(range: PartialRangeThrough<Int>) -> SubSequence {
+        self[...index(startIndex, offsetBy: range.upperBound)]
+    }
+
+    subscript(range: PartialRangeUpTo<Int>) -> SubSequence {
+        self[..<index(startIndex, offsetBy: range.upperBound)]
     }
 }
 
