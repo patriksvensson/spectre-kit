@@ -5,7 +5,7 @@
 public struct Markup: Renderable {
     let paragraph: Paragraph
 
-    public init(markup: String, style: Style? = nil) {
+    public init(_ markup: String, style: Style? = nil) {
         self.paragraph = try! MarkupParser.parse(text: markup, style: style)
     }
 

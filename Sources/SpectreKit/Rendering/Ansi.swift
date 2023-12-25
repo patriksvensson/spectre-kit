@@ -5,7 +5,7 @@ struct AnsiBuilder {
     private static let esc = "\u{001B}"
     private static let csi = esc + "["
 
-    public static func buildAnsi(
+    public static func build(
         options: RenderOptions,
         colors: ColorSystem,
         renderable: Renderable,
