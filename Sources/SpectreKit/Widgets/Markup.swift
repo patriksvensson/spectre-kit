@@ -1,3 +1,5 @@
+import Foundation
+
 // -----------------------------------------------------------------------------
 // Markup
 
@@ -25,6 +27,25 @@ enum MarkupError: Error {
     case malformed(position: Int)
     case unescaped(position: Int)
     case closingTagNotExpected
+}
+
+extension MarkupError: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case let .malformed(position):
+            return "Encountered malformed markup tag at position \(position)"
+        case let .unescaped(position):
+            return "Encountered unescaped ']' token at position \(position)"
+        case .closingTagNotExpected:
+            return "Encountered closing tag when none was expected"
+        }
+    }
+}
+
+extension MarkupError: LocalizedError {
+    public var errorDescription: String? {
+        return self.description
+    }
 }
 
 // -----------------------------------------------------------------------------
