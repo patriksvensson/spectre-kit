@@ -1,6 +1,6 @@
 import Foundation
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // Renderable
 
 /// Represents something that can be  rendered to the terminal.
@@ -20,14 +20,14 @@ public protocol Renderable {
     func render(options: RenderOptions, maxWidth: Int) -> [Segment]
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // RenderOptions
 
 /// Options used when rendering a ``Renderable`` instance.
 public struct RenderOptions {
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // Measurement
 
 /// A measurement that has a minimum and maximum value.

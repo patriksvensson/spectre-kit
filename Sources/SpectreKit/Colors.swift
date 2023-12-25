@@ -1,7 +1,7 @@
 import Foundation
 
-///////////////////////////////////////////////////////////////////////////////
-// Paragraph
+// -----------------------------------------------------------------------------
+// Color
 
 /// Represents a color
 public enum Color: Equatable {
@@ -34,6 +34,8 @@ public enum Color: Equatable {
     public func convert(to: ColorSystem) -> Color {
         if !self.isDefault {
             switch to {
+            case .noColor:
+                return Color.default
             case .standard:
                 if system != .standard {
                     return convert(to: .standard, triplet: getTriplet())
@@ -76,17 +78,37 @@ public enum Color: Equatable {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // ColorSystem
 
 /// Represents a color system
 public enum ColorSystem {
+    case noColor
     case standard
     case eightBit
     case trueColor
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
+// ColorSystemDetector
+
+struct ColorSystemDetector {
+    public static func detect() -> ColorSystem {
+        if let _ = ProcessInfo.processInfo.environment["NO_COLOR"] {
+            return .noColor
+        }
+
+        if let colorTerm = ProcessInfo.processInfo.environment["COLORTERM"] {
+            if colorTerm == "truecolor" || colorTerm == "24bit" {
+                return .trueColor
+            }
+        }
+
+        return .eightBit
+    }
+}
+
+// -----------------------------------------------------------------------------
 // ColorTable
 
 struct ColorTable {
@@ -336,7 +358,7 @@ struct ColorTable {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // ColorPalette
 
 struct ColorPalette {

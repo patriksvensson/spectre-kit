@@ -1,11 +1,11 @@
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // Markup
 
 /// Widget that renders markup text
 public struct Markup: Renderable {
     let paragraph: Paragraph
 
-    init(markup: String, style: Style? = nil) {
+    public init(markup: String, style: Style? = nil) {
         self.paragraph = try! MarkupParser.parse(text: markup, style: style)
     }
 
@@ -18,7 +18,7 @@ public struct Markup: Renderable {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // MarkupError
 
 enum MarkupError: Error {
@@ -27,7 +27,7 @@ enum MarkupError: Error {
     case closingTagNotExpected
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // MarkupToken
 
 enum MarkupToken: Equatable {
@@ -36,7 +36,7 @@ enum MarkupToken: Equatable {
     case text(String)
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // MarkupParser
 
 fileprivate struct MarkupParser {
@@ -86,7 +86,7 @@ fileprivate struct MarkupParser {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // MarkupTokenizer
 
 fileprivate struct MarkupTokenizer {
@@ -249,7 +249,7 @@ fileprivate struct MarkupTokenizer {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // StringBuffer
 
 fileprivate struct StringBuffer {
