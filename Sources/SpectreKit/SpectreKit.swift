@@ -1,16 +1,20 @@
 import Foundation
 
-public protocol ConsoleProtocol {
+/// Represents something that can render ``Renderable`` objects.
+public protocol Renderer {
+    /// Writes a ``Renderable``to the console.
     func write(_ renderable: Renderable)
 }
 
-public class Console: ConsoleProtocol {
+/// A console capable of rendering ``Renderable``objects to `stdout`.
+public class Console: Renderer {
     public let colors: ColorSystem
 
     public init() {
         self.colors = ColorSystemDetector.detect()
     }
 
+    /// Writes a ``Renderable`` to stdout.
     public func write(_ renderable: Renderable) {
         print(
             AnsiBuilder.build(
