@@ -5,7 +5,7 @@ import XCTest
 final class MarkupTests: XCTestCase {
     func testRender() throws {
         // Given
-        let markup = Markup(markup: "Hello [yellow]World[/]!")
+        let markup = Markup("Hello [yellow]World[/]!")
 
         // When
         let result = markup.render(options: RenderOptions(), maxWidth: 80)

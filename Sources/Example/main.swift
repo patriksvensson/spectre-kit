@@ -1,4 +1,8 @@
 import SpectreKit
-import Foundation
+let console = Console()
 
-print("Hello World!")
+console.write(Markup(
+    """
+    [red]Happy holidays from[/]
+    [yellow]Spectre[/][blue]Kit[/]
+    """))
