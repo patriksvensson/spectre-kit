@@ -1,8 +1,5 @@
 import Foundation
 
-///////////////////////////////////////////////////////////////////////////////
-// Paragraph
-
 /// Widget that renders styled text and auto wraps at line breaks as needed.
 public struct Paragraph: Renderable {
     private var lines: [SegmentLine]

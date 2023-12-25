@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // SequenceIterator
 
 struct SequenceIterator<T: IteratorProtocol>: IteratorProtocol, Sequence {
@@ -36,7 +36,7 @@ struct SequenceIterator<T: IteratorProtocol>: IteratorProtocol, Sequence {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------------------
 // PeekableIterator
 
 struct PeekableIterator<T: IteratorProtocol>: IteratorProtocol, Sequence {
