@@ -25,6 +25,19 @@ public protocol Renderable {
 
 /// Options used when rendering a ``Renderable`` instance.
 public struct RenderOptions {
+    let supportsAnsi: Bool
+    
+    init(terminal: Terminal? = nil) {
+        if let terminal = terminal {
+            self.supportsAnsi = terminal.supportsAnsi
+        } else {
+            self.supportsAnsi = false
+        }
+    }
+    
+    init(supportsAnsi: Bool) {
+        self.supportsAnsi = supportsAnsi
+    }
 }
 
 // -----------------------------------------------------------------------------

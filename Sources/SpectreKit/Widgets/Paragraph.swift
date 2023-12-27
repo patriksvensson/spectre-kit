@@ -20,7 +20,7 @@ public struct Paragraph: Renderable {
         self.lines = []
     }
 
-    public init(text: String, style: Style? = nil) {
+    public init(_ text: String, style: Style? = nil) {
         self.lines = []
         self.append(text: text, style: style)
     }
