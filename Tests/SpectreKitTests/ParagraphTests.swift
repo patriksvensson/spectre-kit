@@ -5,9 +5,9 @@ import XCTest
 final class ParagraphTests: XCTestCase {
     func testMeasurement() throws {
         // Given
-        let paragraph = Paragraph(text: "Hello World\nGoodbye World")
+        let paragraph = Paragraph("Hello World\nGoodbye World")
         // When
-        let result = paragraph.measure(options: RenderOptions(), maxWidth: 80)
+        let result = paragraph.measure(options: RenderOptions(supportsAnsi: true), maxWidth: 80)
         // Then
         XCTAssertEqual(result.min, 7, "min")
         XCTAssertEqual(result.max, 13, "max")
@@ -15,10 +15,10 @@ final class ParagraphTests: XCTestCase {
 
     func testRender() throws {
         // Given
-        let paragraph = Paragraph(text: "Hello World\nGoodbye World")
+        let paragraph = Paragraph("Hello World\nGoodbye World")
 
         // When
-        let result = paragraph.render(options: RenderOptions(), maxWidth: 80)
+        let result = paragraph.render(options: RenderOptions(supportsAnsi: true), maxWidth: 80)
 
         // Then
         XCTAssertEqual(result.count, 7)

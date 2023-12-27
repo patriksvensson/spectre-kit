@@ -8,7 +8,7 @@ final class MarkupTests: XCTestCase {
         let markup = Markup("Hello [yellow]World[/]!")
 
         // When
-        let result = markup.render(options: RenderOptions(), maxWidth: 80)
+        let result = markup.render(options: RenderOptions(supportsAnsi: true), maxWidth: 80)
 
         // Then
         XCTAssertEqual(result.count, 4)
