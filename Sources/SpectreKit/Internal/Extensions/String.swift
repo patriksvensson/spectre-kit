@@ -1,5 +1,9 @@
 extension String {
 
+    func cellCount() -> Int {
+        return Wcwidth.cellCount(self)
+    }
+
     func substring(end: Int) -> String {
         self.substring(to: self.index(self.startIndex, offsetBy: end))
     }

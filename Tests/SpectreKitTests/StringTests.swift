@@ -32,4 +32,13 @@ final class StringTests: XCTestCase {
         // With a letter
         XCTAssertEqual("  a".isWhitespace(), false)
     }
+
+    func testMeasurementOfUnicode() throws {
+        // Given
+        let paragraph = "コ"
+        // When
+        let result = paragraph.cellCount()
+        // Then
+        XCTAssertEqual(result, 2)
+    }
 }
