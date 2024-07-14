@@ -94,7 +94,7 @@ public enum ColorSystem {
 
 struct ColorSystemDetector {
     public static func detect() -> ColorSystem {
-        if let _ = ProcessInfo.processInfo.environment["NO_COLOR"] {
+        if ProcessInfo.processInfo.environment["NO_COLOR"] != nil {
             return .noColor
         }
 

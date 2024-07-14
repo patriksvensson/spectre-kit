@@ -7,16 +7,16 @@ import Foundation
 public protocol Terminal {
     /// The width of the terminal
     var width: Int { get }
-    
+
     /// The height of the terminal.
     var height: Int { get }
-    
+
     /// Gets the terminal type.
     var type: TerminalType { get }
 
     /// Writes the specified text to `STDOUT`.
     func write(_ text: String)
-    
+
     /// Writes the specified text to `STDERR`.
     func writeError(_ text: String)
 }
@@ -52,7 +52,7 @@ class DefaultTerminal: Terminal {
         {
             return width
         }
-        
+
         // Try determining using ioctl.
         // Following code does not compile on ppc64le well. TIOCGWINSZ is
         // defined in system ioctl.h file which needs to be used. This is
@@ -78,7 +78,7 @@ class DefaultTerminal: Terminal {
         {
             return height
         }
-        
+
         // Try determining using ioctl.
         // Following code does not compile on ppc64le well. TIOCGWINSZ is
         // defined in system ioctl.h file which needs to be used. This is

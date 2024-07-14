@@ -1,7 +1,8 @@
 import Foundation
 
 /// Widget that renders styled text and auto wraps at line breaks as needed.
-public struct Paragraph: Renderable {
+public struct 
+Paragraph: Renderable {
     private var lines: [SegmentLine]
 
     // Gets the number of lines in the paragraph.
@@ -121,8 +122,7 @@ public struct Paragraph: Renderable {
         }
 
         if maxLineWidth() <= maxWidth {
-            // TODO: No need to clone
-            return cloneSegments()
+            return self.lines
         }
 
         var lines: [SegmentLine] = []
