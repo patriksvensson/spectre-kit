@@ -107,6 +107,42 @@ public enum Segment: Equatable {
 
         return result
     }
+    
+    /// Truncates the segment to the specified width.
+    /// - Parameters:
+    ///  - segment: The segment to truncate.
+    ///  - maxWidth: The maximum width that the segment may occupy.
+    /// - Returns: A new truncated segment, or `nil`
+    public func truncate(maxWidth: Int) -> Segment {
+        if cellCount < maxWidth {
+            return self
+        }
+        func truncate(text: String, style: Style) -> Segment {
+            var builder = ""
+            for character in text {
+                let accumulatedCellWidth = builder.cellCount
+                if accumulatedCellWidth > maxWidth {
+                    break
+                }
+                builder.append(character)
+            }
+            // TODO: if builder.count == 0 should we return .empty?
+            return .text(content: builder, style: style)
+        }
+        switch self {
+        case .controlSequence(code: _):
+            fatalError("TODO")
+        case .empty:
+            return self
+        case .lineBreak:
+            fatalError("TODO: I think this should be empty")
+            return .empty
+        case .text(content: let text, style: let style):
+            return truncate(text: text, style: style ?? .plain)
+        case .whitespace(content: let text):
+            return truncate(text: text, style: .plain)
+        }
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -208,5 +244,71 @@ public struct SegmentLineIterator: IteratorProtocol, Sequence {
         // Return the current segment
         return lines[currentLine]
             .segments[currentIndex]
+    }
+}
+
+extension Array where Element == Segment {
+    public var cellCount: Int {
+        var total = 0
+        for x in self {
+            total += x.cellCount
+        }
+        return total
+    }
+    
+    func truncate(maxWidth: Int) -> [Segment] {
+        var result: [Segment] = []
+        var totalWidth = 0
+        for segment in self {
+            let segmentCellWidth = segment.cellCount
+            if totalWidth + segmentCellWidth > maxWidth {
+                break
+            }
+
+            result.append(segment)
+            totalWidth += segmentCellWidth
+        }
+
+        if result.count == 0 && self.count != 0 {
+            if let first = self.first {
+                let segment = first.truncate(maxWidth: maxWidth)
+                result.append(segment)
+            }
+        }
+        return result
+    }
+    
+    func truncateWithEllipsis(maxWidth: Int) -> [Segment] {
+        if cellCount < maxWidth {
+            return self
+        }
+        var segments = truncate(maxWidth: maxWidth-1).trimEnd()
+        guard let first = segments.first else {
+            return []
+        }
+        if case let Segment.text(_, style) = first {
+            segments.append(.text(content: "…", style: style))
+        } else {
+            segments.append(.text(content: "…", style: .plain))
+        }
+        return segments
+    }
+    
+    public func trimEnd() -> [Segment] {
+        var stack: [Segment] = []
+        var checkForWhitespace = true
+        
+        for segment in self.reversed() {
+            if checkForWhitespace {
+                if segment.isWhitespace {
+                    continue
+                }
+                checkForWhitespace = false
+            }
+
+            stack.append(segment)
+        }
+
+        return stack
     }
 }
