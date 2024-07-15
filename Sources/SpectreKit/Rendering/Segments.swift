@@ -136,11 +136,10 @@ public enum Segment: Equatable {
         }
         switch self {
         case .controlSequence(code: _):
-            fatalError("TODO")
+            return self
         case .empty:
             return self
         case .lineBreak:
-            fatalError("TODO: I think this should be empty")
             return .empty
         case .text(content: let text, style: let style):
             return truncate(text: text, style: style ?? .plain)
