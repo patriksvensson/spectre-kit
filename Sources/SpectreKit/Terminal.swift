@@ -25,6 +25,9 @@ extension Terminal {
     var supportsAnsi: Bool {
         return self.type == .tty
     }
+    var supportsUnicode: Bool {
+        return self.type == .tty
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -65,7 +68,7 @@ class DefaultTerminal: Terminal {
 #else
         let err = ioctl(1, UInt(TIOCGWINSZ), &ws)
 #endif
-        if err == 0 {
+        if err == 0 && ws.ws_col != 0 {
             return Int(ws.ws_col)
         }
 #endif
