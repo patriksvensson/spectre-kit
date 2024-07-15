@@ -21,14 +21,6 @@ extension String {
         return self.replacingOccurrences(of: "\r\n", with: "\n")
     }
 
-    var cellCount: Int {
-        var count = 0
-        for ch in self {
-            count += self.count
-        }
-        return count
-    }
-    
     func splitLines() -> [String] {
         return
             self

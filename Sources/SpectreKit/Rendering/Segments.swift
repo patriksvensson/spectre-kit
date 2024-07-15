@@ -125,7 +125,7 @@ public enum Segment: Equatable {
         func truncate(text: String, style: Style) -> Segment {
             var builder = ""
             for character in text {
-                let accumulatedCellWidth = builder.cellCount
+                let accumulatedCellWidth = builder.cellCount()
                 if accumulatedCellWidth > maxWidth {
                     break
                 }
