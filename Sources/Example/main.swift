@@ -4,7 +4,7 @@ let console = Console()
 
 // Write some markuped text
 // to the terminal.
-console.writeLine()
+console.writeLine("Demo")
 console.markupLine(
     """
     [red]Hello World[/] from

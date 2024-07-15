@@ -20,23 +20,34 @@ public protocol Renderable {
     func render(options: RenderOptions, maxWidth: Int) -> [Segment]
 }
 
+public extension Renderable {
+    func measure(options: RenderOptions, maxWidth: Int) -> Measurement {
+        Measurement(min: maxWidth, max: maxWidth)
+    }
+}
+
 // -----------------------------------------------------------------------------
 // RenderOptions
 
 /// Options used when rendering a ``Renderable`` instance.
 public struct RenderOptions {
     let supportsAnsi: Bool
+    let unicode: Bool
+    var singleLine: Bool = false
     
     init(terminal: Terminal? = nil) {
         if let terminal = terminal {
             self.supportsAnsi = terminal.supportsAnsi
+            self.unicode = terminal.supportsUnicode
         } else {
             self.supportsAnsi = false
+            self.unicode = false
         }
     }
     
-    init(supportsAnsi: Bool) {
+    init(supportsAnsi: Bool, supportsUnicode: Bool = false) {
         self.supportsAnsi = supportsAnsi
+        self.unicode = supportsUnicode
     }
 }
 
