@@ -13,6 +13,16 @@ final class ParagraphTests: XCTestCase {
         XCTAssertEqual(result.max, 13, "max")
     }
 
+    func testMeasurementOfUnicode() throws {
+        // Given
+        let paragraph = Paragraph("コ")
+        // When
+        let result = paragraph.measure(options: RenderOptions(supportsAnsi: true), maxWidth: 80)
+        // Then
+        XCTAssertEqual(result.min, 2, "min")
+        XCTAssertEqual(result.max, 2, "max")
+    }
+
     func testRender() throws {
         // Given
         let paragraph = Paragraph("Hello World\nGoodbye World")

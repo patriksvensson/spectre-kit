@@ -37,8 +37,13 @@ public enum Segment: Equatable {
     }
 
     var cellCount: Int {
-        // TODO: Implement
-        return characterCount
+        switch self {
+        case .controlSequence: 0
+        case let .text(text, _): text.cellCount()
+        case let .whitespace(text): text.cellCount()
+        case .empty: 0
+        case .lineBreak: 0
+        }
     }
 
     var isLineBreak: Bool {
