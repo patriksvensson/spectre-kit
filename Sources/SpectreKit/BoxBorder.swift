@@ -1,14 +1,14 @@
 
 /// Represents a border.
 public class BoxBorder {
-    /// Gets or sets the box style.
+    /// Gets the string representation of the specified border part.
     /// - Parameter part: The part to get the character representation for.
     /// - Returns: A character representation of the specified border part.
     public func get(part: BoxBorderPart) -> String {
         fatalError("Implement in a subclass")
     }
     
-    /// /// Gets the safe border for this border or `nil` if none exist.
+    /// Gets the safe border for this border or `nil` if none exist.
     public var safeBorder: BoxBorder? {
         get {
             nil
