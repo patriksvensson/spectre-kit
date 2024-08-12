@@ -1,8 +1,7 @@
 import Foundation
 
 /// Widget that renders styled text and auto wraps at line breaks as needed.
-public struct 
-Paragraph: Renderable {
+public struct Paragraph: Renderable {
     private var lines: [SegmentLine]
 
     // Gets the number of lines in the paragraph.
@@ -25,6 +24,12 @@ Paragraph: Renderable {
         self.lines = []
         self.append(text: text, style: style)
     }
+
+    /// Gets or sets the alignment of the whole paragraph.
+    public var justification: Justify? = nil
+
+    /// Gets or sets the text overflow strategy.
+    public var overflow: Overflow? = nil
 
     /// Appends text with an optional style to the paragraph.
     /// - Parameters:

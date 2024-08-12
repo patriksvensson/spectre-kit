@@ -84,7 +84,25 @@ public enum Segment: Equatable {
         }
     }
 
-    func splitOverflow(maxWidth: Int) -> [Segment] {
+    static func splitSegment (_ text: String, maxCellLength: Int) -> [String] {
+        var list: [String] = []
+        var length = 0
+        var sb = ""
+        for ch in text {
+            let chw = Wcwidth.cellSize(ch)
+            if length + chw > maxCellLength {
+                list.append (sb)
+                sb = ""
+                length = 0
+            }
+            length += chw
+            sb.append(ch)
+        }
+        list.append(sb)
+        return list
+    }
+
+    func splitOverflow(maxWidth: Int, overflow: Overflow = .crop) -> [Segment] {
         if self.cellCount <= maxWidth {
             return [self]
         }
@@ -98,9 +116,22 @@ public enum Segment: Equatable {
             case .controlSequence:
                 result.append(self)
             case let .text(text, style):
-                result.append(
-                    Segment.text(
-                        content: text.substring(end: maxWidth), style: style))
+                switch overflow {
+                case .fold:
+                    let split = Segment.splitSegment(text, maxCellLength: maxWidth)
+                    for str in split {
+                        result.append(Segment.text(content: str, style: style))
+                    }
+                case .crop:
+                    result.append(
+                        Segment.text(
+                            content: text.substring(end: maxWidth), style: style))
+                case .ellipsis:
+                    result.append(
+                        Segment.text(content:
+                                        text.substring(end: maxWidth - 1) + "…",
+                                     style: style));
+                }
             case let .whitespace(text):
                 result.append(
                     Segment.whitespace(
