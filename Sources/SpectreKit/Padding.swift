@@ -6,14 +6,10 @@ public struct Padding: Equatable, Hashable {
     /// Gets the top padding.
     public let top: Int
 
-    /// <summary>
     /// Gets the right padding.
-    /// </summary>
     public let right: Int
 
-    /// <summary>
     /// Gets the bottom padding.
-    /// </summary>
     public let bottom: Int
 
     /// Initializes a new instance of the ``Padding`` struct

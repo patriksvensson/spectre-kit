@@ -4,8 +4,15 @@ extension String {
         return Wcwidth.cellCount(self)
     }
 
+    func substring(start: Int, end: Int) -> String {
+        let start = self.index(self.startIndex, offsetBy: start)
+        let end = self.index(self.startIndex, offsetBy: end)
+        return String(self[start..<end])
+    }
+
     func substring(end: Int) -> String {
-        self.substring(to: self.index(self.startIndex, offsetBy: end))
+        let end = self.index(self.startIndex, offsetBy: end)
+        return String(self[..<end])
     }
 
     func isWhitespace() -> Bool {

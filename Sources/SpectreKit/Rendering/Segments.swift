@@ -84,24 +84,6 @@ public enum Segment: Equatable {
         }
     }
 
-    static func splitSegment(_ text: String, maxCellLength: Int) -> [String] {
-        var list: [String] = []
-        var length = 0
-        var sb = ""
-        for ch in text {
-            let chw = Wcwidth.cellSize(ch)
-            if length + chw > maxCellLength {
-                list.append(sb)
-                sb = ""
-                length = 0
-            }
-            length += chw
-            sb.append(ch)
-        }
-        list.append(sb)
-        return list
-    }
-
     func splitOverflow(maxWidth: Int, overflow: Overflow = .crop) -> [Segment] {
         if self.cellCount <= maxWidth {
             return [self]
@@ -150,7 +132,7 @@ public enum Segment: Equatable {
     ///  - segment: The segment to truncate.
     ///  - maxWidth: The maximum width that the segment may occupy.
     /// - Returns: A new truncated segment, or `nil`
-    public func truncate(maxWidth: Int) -> Segment {
+    func truncate(maxWidth: Int) -> Segment {
         if cellCount < maxWidth {
             return self
         }
@@ -178,6 +160,140 @@ public enum Segment: Equatable {
         case .whitespace(content: let text):
             return truncate(text: text, style: .plain)
         }
+    }
+
+    func split(offset: Int) -> (Segment, Segment?) {
+        if offset < 0 {
+            return (self, nil)
+        }
+
+        if offset >= cellCount {
+            return (self, nil)
+        }
+
+        var index = 0
+        let text = getText() ?? ""
+
+        if offset > 0 {
+            var accumulated = 0
+            for character in text {
+                index += 1
+                accumulated += character.cellSize()
+                if accumulated >= offset {
+                    break
+                }
+            }
+        }
+
+        return (
+            Segment.text(content: text.substring(start: 0, end: index), style: self.getStyle()),
+            Segment.text(
+                content: text.substring(start: index, end: text.count - index),
+                style: self.getStyle())
+        )
+    }
+
+    static func padding(count: Int) -> Segment {
+        return Segment.whitespace(content: String(repeating: " ", count: count))
+    }
+
+    static func splitSegment(_ text: String, maxCellLength: Int) -> [String] {
+        var list: [String] = []
+        var length = 0
+        var sb = ""
+        for ch in text {
+            let chw = Wcwidth.cellSize(ch)
+            if length + chw > maxCellLength {
+                list.append(sb)
+                sb = ""
+                length = 0
+            }
+            length += chw
+            sb.append(ch)
+        }
+        list.append(sb)
+        return list
+    }
+
+    static func splitLines(segments: [Segment]) -> [SegmentLine] {
+        return splitLines(segments: segments, maxWidth: Int.max)
+    }
+
+    static func splitLines(segments: [Segment], maxWidth: Int) -> [SegmentLine] {
+        var lines: [SegmentLine] = []
+        var line = SegmentLine()
+
+        var stack = Stack<Segment>(segments.reversed())
+        while true {
+            guard let segment = stack.pop() else {
+                break
+            }
+
+            let segmentLength = segment.cellCount
+
+            // Does this segment make the line exceed the max width?
+            let lineLength = line.cellCount
+            if lineLength + segmentLength > maxWidth {
+                let diff = -(maxWidth - (lineLength + segmentLength))
+                let offset = (segment.getText()?.cellCount() ?? 0) - diff
+
+                let (first, second) = segment.split(offset: offset)
+
+                line.append(segment: first)
+                lines.append(line)
+                line = SegmentLine()
+
+                if second != nil {
+                    stack.push(second.unsafelyUnwrapped)
+                }
+
+                continue
+            }
+
+            // Does the segment contain a newline?
+            if var text = segment.getText() {
+                if text.contains("\n") {
+                    if text == "\n" {
+                        if line.count != 0 || segment.isLineBreak {
+                            lines.append(line)
+                            line = SegmentLine()
+                        }
+
+                        continue
+                    }
+
+                    while true {
+                        let parts = text.splitLines()
+                        if parts.count > 0 {
+                            if parts[0].count > 0 {
+                                line.append(
+                                    segment: Segment.text(
+                                        content: parts[0], style: segment.getStyle()))
+                            }
+                        }
+
+                        if parts.count > 1 {
+                            if line.count > 0 {
+                                lines.append(line)
+                                line = SegmentLine()
+                            }
+
+                            text = parts[1...].joined()
+                        } else {
+                            break
+                        }
+                    }
+                } else {
+                    line.append(segment: segment)
+                }
+            }
+        }
+
+        if line.count > 0 {
+            lines.append(line)
+        }
+
+        return lines
     }
 }
 
