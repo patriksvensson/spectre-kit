@@ -2,7 +2,7 @@
 public class AsciiBoxBorder: BoxBorder {
     public override func get(part: BoxBorderPart) -> String {
         switch part {
-        case .topLeft: 
+        case .topLeft:
             "+"
         case .top:
             "-"

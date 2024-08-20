@@ -2,7 +2,7 @@
 public enum Overflow {
     /// Represents text overflow.
     case fold
-    
+
     /// Truncates the text at the end of the line.
     case crop
 
@@ -11,7 +11,7 @@ public enum Overflow {
     case ellipsis
 }
 
-///Represents something that can overflow.
+/// Represents something that can overflow.
 public protocol Overflowable {
     /// Gets or sets the text overflow strategy.
     var overflow: Overflow? { get set }
