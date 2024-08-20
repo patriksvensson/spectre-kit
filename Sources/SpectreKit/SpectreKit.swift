@@ -33,7 +33,7 @@ public class Console: Renderer {
     }
 
     /// Writes a ``Renderable`` to stdout.
-    public func write(_ renderable: Renderable, lineBreak: Bool = true) {
+    public func write(_ renderable: Renderable, lineBreak: Bool = false) {
         self.terminal.write(render(renderable))
         if lineBreak {
             self.terminal.write("\n")

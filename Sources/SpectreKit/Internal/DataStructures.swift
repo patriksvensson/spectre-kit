@@ -47,7 +47,15 @@ extension Queue: Sequence {
 // Stack
 
 struct Stack<T> {
-    var list = [T]()
+    var list: [T]
+
+    public init() {
+        self.list = [T]()
+    }
+
+    public init(_ list: [T]) {
+        self.list = list
+    }
 
     public var isEmpty: Bool {
         return list.isEmpty

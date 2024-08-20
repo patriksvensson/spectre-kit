@@ -1,5 +1,6 @@
 import Foundation
 import SpectreKit
+
 let console = Console()
 
 // Write some markuped text
@@ -13,5 +14,4 @@ console.markupLine(
 
 // Write regular (word wrapped)
 // text to the terminal.
-console.writeLine()
-console.writeLine("Goodbye!")
+console.write(Padder(Text("Goodbye!"), Padding(horizontal: 3, vertical: 0)))
