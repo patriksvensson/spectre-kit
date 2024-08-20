@@ -20,8 +20,8 @@ public protocol Renderable {
     func render(options: RenderOptions, maxWidth: Int) -> [Segment]
 }
 
-public extension Renderable {
-    func measure(options: RenderOptions, maxWidth: Int) -> Measurement {
+extension Renderable {
+    public func measure(options: RenderOptions, maxWidth: Int) -> Measurement {
         Measurement(min: maxWidth, max: maxWidth)
     }
 }
@@ -34,7 +34,7 @@ public struct RenderOptions {
     let supportsAnsi: Bool
     let unicode: Bool
     var singleLine: Bool = false
-    
+
     init(terminal: Terminal? = nil) {
         if let terminal = terminal {
             self.supportsAnsi = terminal.supportsAnsi
@@ -44,7 +44,7 @@ public struct RenderOptions {
             self.unicode = false
         }
     }
-    
+
     init(supportsAnsi: Bool, supportsUnicode: Bool = false) {
         self.supportsAnsi = supportsAnsi
         self.unicode = supportsUnicode

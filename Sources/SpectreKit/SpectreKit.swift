@@ -56,9 +56,9 @@ public class Console: Renderer {
                 switch segment {
                 case .lineBreak:
                     builder += "\n"
-                case .whitespace(content: let content):
+                case .whitespace(let content):
                     builder += content
-                case .text(content: let content, _):
+                case .text(let content, _):
                     builder += content
                 default:
                     continue

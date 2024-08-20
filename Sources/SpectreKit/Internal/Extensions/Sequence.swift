@@ -16,5 +16,5 @@ extension Sequence {
             }
         }
         return nil
-    }    
+    }
 }

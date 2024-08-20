@@ -1,6 +1,5 @@
 /// A renderable piece of text.
-public class Text: Renderable, Justifiable, Overflowable
-{
+public class Text: Renderable, Justifiable, Overflowable {
     var _paragraph: Paragraph
 
     /// Gets an empty ``Text`` instance.
@@ -16,8 +15,7 @@ public class Text: Renderable, Justifiable, Overflowable
     /// </summary>
     /// <param name="text">The text.</param>
     /// <param name="style">The style of the text or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
-    public init(_ text: String, style: Style? = nil)
-    {
+    public init(_ text: String, style: Style? = nil) {
         _paragraph = Paragraph(text, style: style)
     }
 

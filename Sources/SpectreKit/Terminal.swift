@@ -60,18 +60,18 @@ class DefaultTerminal: Terminal {
         // Following code does not compile on ppc64le well. TIOCGWINSZ is
         // defined in system ioctl.h file which needs to be used. This is
         // a temporary arrangement and needs to be fixed.
-#if !arch(powerpc64le)
-        var ws = winsize()
-#if os(OpenBSD)
-        let tiocgwinsz = 0x40087468
-        let err = ioctl(1, UInt(tiocgwinsz), &ws)
-#else
-        let err = ioctl(1, UInt(TIOCGWINSZ), &ws)
-#endif
-        if err == 0 && ws.ws_col != 0 {
-            return Int(ws.ws_col)
-        }
-#endif
+        #if !arch(powerpc64le)
+            var ws = winsize()
+            #if os(OpenBSD)
+                let tiocgwinsz = 0x4008_7468
+                let err = ioctl(1, UInt(tiocgwinsz), &ws)
+            #else
+                let err = ioctl(1, UInt(TIOCGWINSZ), &ws)
+            #endif
+            if err == 0 && ws.ws_col != 0 {
+                return Int(ws.ws_col)
+            }
+        #endif
         return 80
     }
 
@@ -86,18 +86,18 @@ class DefaultTerminal: Terminal {
         // Following code does not compile on ppc64le well. TIOCGWINSZ is
         // defined in system ioctl.h file which needs to be used. This is
         // a temporary arrangement and needs to be fixed.
-#if !arch(powerpc64le)
-        var ws = winsize()
-#if os(OpenBSD)
-        let tiocgwinsz = 0x40087468
-        let err = ioctl(1, UInt(tiocgwinsz), &ws)
-#else
-        let err = ioctl(1, UInt(TIOCGWINSZ), &ws)
-#endif
-        if err == 0 {
-            return Int(ws.ws_row)
-        }
-#endif
+        #if !arch(powerpc64le)
+            var ws = winsize()
+            #if os(OpenBSD)
+                let tiocgwinsz = 0x4008_7468
+                let err = ioctl(1, UInt(tiocgwinsz), &ws)
+            #else
+                let err = ioctl(1, UInt(TIOCGWINSZ), &ws)
+            #endif
+            if err == 0 {
+                return Int(ws.ws_row)
+            }
+        #endif
         return 24
     }
 

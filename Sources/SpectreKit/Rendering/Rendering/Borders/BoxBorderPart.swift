@@ -1,6 +1,5 @@
 /// Represents the different parts of a box border.
-public enum BoxBorderPart
-{
+public enum BoxBorderPart {
     /// The top left part of a box.
     case topLeft
 

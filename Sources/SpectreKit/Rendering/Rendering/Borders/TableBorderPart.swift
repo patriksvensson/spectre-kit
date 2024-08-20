@@ -1,10 +1,8 @@
 /// Represents the different parts of a table border.
-public enum TableBorderPart
-{
+public enum TableBorderPart {
     /// The top left part of a header.
     case headerTopLeft
 
-    
     /// The top part of a header.
     case headerTop
 
@@ -40,7 +38,7 @@ public enum TableBorderPart
 
     /// The top part of a footer.
     case footerTop
-    
+
     /// The top separator part of a footer.
     case footerTopSeparator
 

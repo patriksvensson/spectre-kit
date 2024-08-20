@@ -84,14 +84,14 @@ public enum Segment: Equatable {
         }
     }
 
-    static func splitSegment (_ text: String, maxCellLength: Int) -> [String] {
+    static func splitSegment(_ text: String, maxCellLength: Int) -> [String] {
         var list: [String] = []
         var length = 0
         var sb = ""
         for ch in text {
             let chw = Wcwidth.cellSize(ch)
             if length + chw > maxCellLength {
-                list.append (sb)
+                list.append(sb)
                 sb = ""
                 length = 0
             }
@@ -128,9 +128,10 @@ public enum Segment: Equatable {
                             content: text.substring(end: maxWidth), style: style))
                 case .ellipsis:
                     result.append(
-                        Segment.text(content:
-                                        text.substring(end: maxWidth - 1) + "…",
-                                     style: style));
+                        Segment.text(
+                            content:
+                                text.substring(end: maxWidth - 1) + "…",
+                            style: style))
                 }
             case let .whitespace(text):
                 result.append(
@@ -143,7 +144,7 @@ public enum Segment: Equatable {
 
         return result
     }
-    
+
     /// Truncates the segment to the specified width.
     /// - Parameters:
     ///  - segment: The segment to truncate.
@@ -172,7 +173,7 @@ public enum Segment: Equatable {
             return self
         case .lineBreak:
             return .empty
-        case .text(content: let text, style: let style):
+        case .text(content: let text, let style):
             return truncate(text: text, style: style ?? .plain)
         case .whitespace(content: let text):
             return truncate(text: text, style: .plain)
@@ -290,7 +291,7 @@ extension Array where Element == Segment {
         }
         return total
     }
-    
+
     func truncate(maxWidth: Int) -> [Segment] {
         var result: [Segment] = []
         var totalWidth = 0
@@ -312,12 +313,12 @@ extension Array where Element == Segment {
         }
         return result
     }
-    
+
     func truncateWithEllipsis(maxWidth: Int) -> [Segment] {
         if cellCount < maxWidth {
             return self
         }
-        var segments = truncate(maxWidth: maxWidth-1).trimEnd()
+        var segments = truncate(maxWidth: maxWidth - 1).trimEnd()
         guard let first = segments.first else {
             return []
         }
@@ -328,11 +329,11 @@ extension Array where Element == Segment {
         }
         return segments
     }
-    
+
     public func trimEnd() -> [Segment] {
         var stack: [Segment] = []
         var checkForWhitespace = true
-        
+
         for segment in self.reversed() {
             if checkForWhitespace {
                 if segment.isWhitespace {
