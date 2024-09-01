@@ -127,41 +127,6 @@ public enum Segment: Equatable {
         return result
     }
 
-    /// Truncates the segment to the specified width.
-    /// - Parameters:
-    ///  - segment: The segment to truncate.
-    ///  - maxWidth: The maximum width that the segment may occupy.
-    /// - Returns: A new truncated segment, or `nil`
-    func truncate(maxWidth: Int) -> Segment {
-        if cellCount <= maxWidth {
-            return self
-        }
-        func truncate(text: String, style: Style) -> Segment {
-            var builder = ""
-            for character in text {
-                let accumulatedCellWidth = builder.cellCount()
-                if accumulatedCellWidth >= maxWidth {
-                    break
-                }
-                builder.append(character)
-            }
-            // TODO: if builder.count == 0 should we return .empty?
-            return .text(content: builder, style: style)
-        }
-        switch self {
-        case .controlSequence(code: _):
-            return self
-        case .empty:
-            return self
-        case .lineBreak:
-            return .empty
-        case .text(content: let text, let style):
-            return truncate(text: text, style: style ?? .plain)
-        case .whitespace(content: let text):
-            return truncate(text: text, style: .plain)
-        }
-    }
-
     func split(offset: Int) -> (Segment, Segment?) {
         if offset < 0 {
             return (self, nil)
@@ -191,6 +156,51 @@ public enum Segment: Equatable {
                 content: text.substring(start: index, end: text.count - index),
                 style: self.getStyle())
         )
+    }
+
+    /// Truncates the segment to the specified width.
+    /// - Parameters:
+    ///  - segment: The segment to truncate.
+    ///  - maxWidth: The maximum width that the segment may occupy.
+    /// - Returns: A new truncated segment, or `nil`
+    static func truncate(segment: Segment?, maxWidth: Int) -> Segment? {
+        guard let segment = segment else {
+            return nil
+        }
+
+        if segment.cellCount <= maxWidth {
+            return segment
+        }
+
+        func truncate(text: String, style: Style) -> Segment? {
+            var builder = ""
+            for character in text {
+                let accumulatedCellWidth = builder.cellCount()
+                if accumulatedCellWidth >= maxWidth {
+                    break
+                }
+                builder.append(character)
+            }
+
+            if builder.count == 0 {
+                return nil
+            }
+
+            return .text(content: builder, style: style)
+        }
+
+        switch segment {
+        case .controlSequence:
+            return nil
+        case .empty:
+            return nil
+        case .lineBreak:
+            return nil
+        case .text(content: let text, let style):
+            return truncate(text: text, style: style ?? .plain)
+        case .whitespace(content: let text):
+            return truncate(text: text, style: .plain)
+        }
     }
 
     static func padding(count: Int) -> Segment {
@@ -423,8 +433,9 @@ extension Array where Element == Segment {
 
         if result.count == 0 && self.count != 0 {
             if let first = self.first {
-                let segment = first.truncate(maxWidth: maxWidth)
-                result.append(segment)
+                if let segment = Segment.truncate(segment: first, maxWidth: maxWidth) {
+                    result.append(segment)
+                }
             }
         }
         return result
@@ -434,6 +445,7 @@ extension Array where Element == Segment {
         if cellCount <= maxWidth {
             return self
         }
+
         var segments = truncate(maxWidth: maxWidth - 1).trimEnd()
         guard let first = segments.first else {
             return []

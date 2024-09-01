@@ -22,7 +22,6 @@ class Aligner {
             if remainder != 0 {
                 segments.append(Segment.padding(count: remainder))
             }
-            break
         case .left:
             break
         }
