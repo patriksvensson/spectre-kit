@@ -109,7 +109,20 @@ public struct Paragraph: Renderable {
             return []
         }
 
-        let lines = splitLines(maxWidth: maxWidth)
+        var lines =
+            options.singleLine
+            ? self.lines
+            : splitLines(maxWidth: maxWidth)
+
+        // Justify lines
+        let justification = self.justification ?? Justify.left
+        if justification != Justify.left {
+            for var seq in lines.makeSequenceIterator() {
+                // Kind of hackist reassigning the line, but not sure how to do it otherwise
+                Aligner.align(&seq.item.segments, alignment: justification, maxWidth: maxWidth)
+                lines[seq.index] = seq.item
+            }
+        }
 
         // collect
         var result: [Segment] = []

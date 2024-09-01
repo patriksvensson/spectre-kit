@@ -27,7 +27,7 @@ public class Rule: Renderable, BoxBordereable, Justifiable {
     public func render(options: RenderOptions, maxWidth: Int) -> [Segment] {
         let extraLength = (2 * titlePadding) + (2 * titleSpacing)
 
-        guard let titleText = title, maxWidth <= extraLength else {
+        guard let titleText = title, maxWidth > extraLength else {
             return getLineWithoutTitle(options, maxWidth: maxWidth)
         }
 
@@ -37,7 +37,7 @@ public class Rule: Renderable, BoxBordereable, Justifiable {
         if title.cellCount > maxWidth - extraLength {
             // Truncate the title
             title = title.truncateWithEllipsis(maxWidth: maxWidth - extraLength)
-            if !title.isEmpty {
+            if title.isEmpty {
                 // We couldn't fit the title at all.
                 return getLineWithoutTitle(options, maxWidth: maxWidth)
             }
