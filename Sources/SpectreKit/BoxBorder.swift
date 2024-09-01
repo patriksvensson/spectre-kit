@@ -25,20 +25,20 @@ public class BoxBorder {
     }
 
     /// Gets an invisible border.
-    static var none: BoxBorder { NoBoxBorder() }
+    public static var none: BoxBorder { NoBoxBorder() }
 
     /// Gets an ASCII border.
-    static var ascii: BoxBorder { AsciiBoxBorder() }
+    public static var ascii: BoxBorder { AsciiBoxBorder() }
 
     /// Gets a double border.
-    static var double: BoxBorder { DoubleBoxBorder() }
+    public static var double: BoxBorder { DoubleBoxBorder() }
 
     /// Gets a heavy border
-    static var heavy: BoxBorder { HeavyBoxBorder() }
+    public static var heavy: BoxBorder { HeavyBoxBorder() }
 
     /// Gets a rounded border
-    static var rounded: BoxBorder { RoundedBoxBorder() }
+    public static var rounded: BoxBorder { RoundedBoxBorder() }
 
     /// Gets a square border
-    static var square: BoxBorder { SquareBoxBorder() }
+    public static var square: BoxBorder { SquareBoxBorder() }
 }
