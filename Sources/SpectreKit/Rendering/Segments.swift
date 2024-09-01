@@ -84,7 +84,9 @@ public enum Segment: Equatable {
         }
     }
 
-    func splitOverflow(maxWidth: Int, overflow: Overflow = .crop) -> [Segment] {
+    func splitOverflow(maxWidth: Int, overflow: Overflow?) -> [Segment] {
+        let overflow = overflow ?? .crop
+
         if self.cellCount <= maxWidth {
             return [self]
         }

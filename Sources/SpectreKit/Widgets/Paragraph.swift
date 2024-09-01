@@ -175,7 +175,7 @@ public struct Paragraph: Renderable {
             if length > maxWidth {
                 // The current segment is longer than the width of the console,
                 // so we will need to crop it up, into new segments.
-                let segments = current.splitOverflow(maxWidth: maxWidth)
+                let segments = current.splitOverflow(maxWidth: maxWidth, overflow: self.overflow)
                 if segments.count > 0 {
                     if line.cellCount + segments[0].cellCount > maxWidth {
                         lines.append(line)
