@@ -10,11 +10,6 @@ public class Text: Renderable, Justifiable, Overflowable {
         Text("\n", style: .plain)
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Text"/> class.
-    /// </summary>
-    /// <param name="text">The text.</param>
-    /// <param name="style">The style of the text or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
     public init(_ text: String, style: Style? = nil) {
         _paragraph = Paragraph(text, style: style)
     }

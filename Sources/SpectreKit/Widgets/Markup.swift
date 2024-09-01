@@ -4,8 +4,20 @@ import Foundation
 // Markup
 
 /// Widget that renders markup text
-public struct Markup: Renderable {
-    let paragraph: Paragraph
+public class Markup: Renderable, Justifiable, Overflowable {
+    var paragraph: Paragraph
+
+    /// Gets or sets the text alignment.
+    public var justification: Justify? {
+        get { self.paragraph.justification }
+        set { self.paragraph.justification = newValue }
+    }
+
+    /// Gets or sets the text overflow strategy.
+    public var overflow: Overflow? {
+        get { self.paragraph.overflow }
+        set { self.paragraph.overflow = newValue }
+    }
 
     public init(_ markup: String, style: Style? = nil) {
         self.paragraph = try! MarkupParser.parse(text: markup, style: style)

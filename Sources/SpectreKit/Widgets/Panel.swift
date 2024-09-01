@@ -4,7 +4,7 @@ public class Panel: Renderable, BoxBordereable, Borderable, Paddable {
     private let content: Renderable
     private let edgeWidth: Int = 2
 
-    public var border: BoxBorder = BoxBorder.rounded
+    public var border: BoxBorder = BoxBorder.square
     public var useSafeBorder: Bool = true
     public var borderStyle: Style?
     public var padding: Padding? = Padding(left: 1, top: 0, right: 1, bottom: 0)
@@ -162,33 +162,13 @@ public class PanelHeader {
     }
 }
 
-public extension Panel {
-    func safeBorder() -> Self {
-        self.useSafeBorder = true
-        return self
-    }
-
-    func noSafeBorder() -> Self {
-        self.useSafeBorder = false
-        return self
-    }
-
-    func setBorder(_ border: BoxBorder) -> Self {
-        self.border = border
-        return self
-    }
-
-    func setBorderStyle(_ style: Style?) -> Self {
-        self.borderStyle = style
-        return self
-    }
-
-    func setWidth(_ width: Int) -> Self {
+extension Panel {
+    public func setWidth(_ width: Int) -> Self {
         self.width = width
         return self
     }
 
-    func setHeader(_ text: String, _ justification: Justify? = nil) -> Self {
+    public func setHeader(_ text: String, _ justification: Justify? = nil) -> Self {
         if let header = self.header {
             self.header = PanelHeader(text, header.justification)
         } else {
@@ -197,7 +177,7 @@ public extension Panel {
         return self
     }
 
-    func setHeaderAlignment(_ justification: Justify?) -> Self {
+    public func setHeaderAlignment(_ justification: Justify?) -> Self {
         if let header = self.header {
             self.header = PanelHeader(header.text, justification)
         } else {

@@ -49,3 +49,21 @@ public struct Padding: Equatable, Hashable {
         top + bottom
     }
 }
+
+extension Padding? {
+    func getSafeLeftPadding() -> Int {
+        return self?.left ?? 0
+    }
+
+    func getSafeRightPadding() -> Int {
+        return self?.right ?? 0
+    }
+
+    func getSafeTopPadding() -> Int {
+        return self?.top ?? 0
+    }
+
+    func getSafeBottomPadding() -> Int {
+        return self?.bottom ?? 0
+    }
+}
