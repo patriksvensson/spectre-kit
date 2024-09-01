@@ -4,15 +4,13 @@ public class Panel: Renderable, BoxBordereable, Borderable, Paddable {
     private let content: Renderable
     private let edgeWidth: Int = 2
 
-    public var border: BoxBorder = BoxBorder.square
+    public var border: BoxBorder = BoxBorder.rounded
     public var useSafeBorder: Bool = true
     public var borderStyle: Style?
     public var padding: Padding? = Padding(left: 1, top: 0, right: 1, bottom: 0)
     public var header: PanelHeader?
-    public var expand: Bool = false
 
     public var width: Int?
-    public var height: Int?
 
     public init(_ text: String) {
         self.content = Markup(text)
@@ -55,7 +53,7 @@ public class Panel: Renderable, BoxBordereable, Borderable, Paddable {
         let child = Padder(self.content, self.padding)
         let width = measure(options: options, maxWidth: maxWidth, child: child)
 
-        let panelWidth = min(!self.expand ? width.max : maxWidth, maxWidth)
+        let panelWidth = min(width.max, maxWidth)
         let innerWidth = panelWidth - edgeWidth
 
         var result: [Segment] = []
@@ -161,5 +159,50 @@ public class PanelHeader {
     public init(_ text: String, _ justification: Justify? = nil) {
         self.text = text
         self.justification = justification
+    }
+}
+
+public extension Panel {
+    func safeBorder() -> Self {
+        self.useSafeBorder = true
+        return self
+    }
+
+    func noSafeBorder() -> Self {
+        self.useSafeBorder = false
+        return self
+    }
+
+    func setBorder(_ border: BoxBorder) -> Self {
+        self.border = border
+        return self
+    }
+
+    func setBorderStyle(_ style: Style?) -> Self {
+        self.borderStyle = style
+        return self
+    }
+
+    func setWidth(_ width: Int) -> Self {
+        self.width = width
+        return self
+    }
+
+    func setHeader(_ text: String, _ justification: Justify? = nil) -> Self {
+        if let header = self.header {
+            self.header = PanelHeader(text, header.justification)
+        } else {
+            self.header = PanelHeader(text, justification)
+        }
+        return self
+    }
+
+    func setHeaderAlignment(_ justification: Justify?) -> Self {
+        if let header = self.header {
+            self.header = PanelHeader(header.text, justification)
+        } else {
+            self.header = PanelHeader("", justification)
+        }
+        return self
     }
 }
