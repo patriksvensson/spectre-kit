@@ -3,15 +3,11 @@ import SpectreKit
 
 let console = Console()
 
-// Write some markuped text
-// to the terminal.
-console.writeLine("Demo")
-console.markupLine(
-    """
+let panel = Panel("""
     [red]Hello World[/] from
     [yellow]Spectre[/][blue]Kit[/]
     """)
+panel.header = PanelHeader("[green]T[/][blue]e[/][yellow]s[/][red]t[/]")
+panel.header?.justification = Justify.center
 
-// Write regular (word wrapped)
-// text to the terminal.
-console.write(Padder(Text("Goodbye!"), Padding(horizontal: 3, vertical: 0)))
+console.write(panel)

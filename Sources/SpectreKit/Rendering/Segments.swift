@@ -133,14 +133,14 @@ public enum Segment: Equatable {
     ///  - maxWidth: The maximum width that the segment may occupy.
     /// - Returns: A new truncated segment, or `nil`
     func truncate(maxWidth: Int) -> Segment {
-        if cellCount < maxWidth {
+        if cellCount <= maxWidth {
             return self
         }
         func truncate(text: String, style: Style) -> Segment {
             var builder = ""
             for character in text {
                 let accumulatedCellWidth = builder.cellCount()
-                if accumulatedCellWidth > maxWidth {
+                if accumulatedCellWidth >= maxWidth {
                     break
                 }
                 builder.append(character)
@@ -431,7 +431,7 @@ extension Array where Element == Segment {
     }
 
     func truncateWithEllipsis(maxWidth: Int) -> [Segment] {
-        if cellCount < maxWidth {
+        if cellCount <= maxWidth {
             return self
         }
         var segments = truncate(maxWidth: maxWidth - 1).trimEnd()
