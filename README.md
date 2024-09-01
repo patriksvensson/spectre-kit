@@ -5,9 +5,8 @@ A Swift library that makes it easier to create beautiful terminal applications.
 It is a port of [Spectre.Console](https://spectreconsole.net) which in turn is heavily inspired by 
 the excellent Python library, [Rich](https://github.com/Textualize/rich).
 
-> [!IMPORTANT]\
-> SpectreKit is currently under development, and not everything in `Spectre.Console` has been
-implemented (yet).
+> [!NOTE]
+> SpectreKit is currently under development, and many things are still missing.
 
 ## Example
 
