@@ -1,3 +1,4 @@
+# Swift
 .DS_Store
 /.build
 /Packages
@@ -8,3 +9,6 @@ DerivedData/
 .netrc
 build-docs.log
 Package.resolved
+
+# Documentation
+/Documentation
