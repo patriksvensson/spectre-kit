@@ -17,4 +17,12 @@ extension Sequence {
         }
         return nil
     }
+
+    func any(_ fn: (Element) -> Bool) -> Bool {
+        return filter(fn).count > 0
+    }
+}
+
+extension Sequence where Element: Numeric {
+    func sum() -> Element { return reduce(0, +) }
 }

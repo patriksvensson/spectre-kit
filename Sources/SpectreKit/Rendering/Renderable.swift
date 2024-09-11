@@ -21,6 +21,7 @@ public protocol Renderable {
 }
 
 extension Renderable {
+    // Default implementation
     public func measure(options: RenderOptions, maxWidth: Int) -> Measurement {
         Measurement(min: maxWidth, max: maxWidth)
     }
@@ -33,21 +34,24 @@ extension Renderable {
 public struct RenderOptions {
     let supportsAnsi: Bool
     let unicode: Bool
-    var singleLine: Bool = false
+    var singleLine: Bool
 
     init(terminal: Terminal? = nil) {
         if let terminal = terminal {
             self.supportsAnsi = terminal.supportsAnsi
             self.unicode = terminal.supportsUnicode
+            self.singleLine = false
         } else {
             self.supportsAnsi = false
             self.unicode = false
+            self.singleLine = false
         }
     }
 
-    init(supportsAnsi: Bool, supportsUnicode: Bool = false) {
+    init(supportsAnsi: Bool, supportsUnicode: Bool = false, singleLine: Bool = false) {
         self.supportsAnsi = supportsAnsi
         self.unicode = supportsUnicode
+        self.singleLine = singleLine
     }
 }
 

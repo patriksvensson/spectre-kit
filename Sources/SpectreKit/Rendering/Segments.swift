@@ -85,7 +85,7 @@ public enum Segment: Equatable {
     }
 
     func splitOverflow(maxWidth: Int, overflow: Overflow?) -> [Segment] {
-        let overflow = overflow ?? .crop
+        let overflow = overflow ?? .fold
 
         if self.cellCount <= maxWidth {
             return [self]
@@ -107,10 +107,12 @@ public enum Segment: Equatable {
                         result.append(Segment.text(content: str, style: style))
                     }
                 case .crop:
+                    // TODO: Won't work with wide characters
                     result.append(
                         Segment.text(
                             content: text.substring(end: maxWidth), style: style))
                 case .ellipsis:
+                    // TODO: Won't work with wide characters
                     result.append(
                         Segment.text(
                             content:
@@ -118,6 +120,7 @@ public enum Segment: Equatable {
                             style: style))
                 }
             case let .whitespace(text):
+                // TODO: Won't work with wide characters
                 result.append(
                     Segment.whitespace(
                         content: text.substring(end: maxWidth)))
@@ -205,6 +208,30 @@ public enum Segment: Equatable {
         }
     }
 
+    static func truncate(_ segments: [Segment], maxWidth: Int) -> [Segment] {
+        var result: [Segment] = []
+
+        var totalWidth = 0
+        for segment in segments {
+            let segmentCellWidth = segment.cellCount
+            if totalWidth + segmentCellWidth > maxWidth {
+                break
+            }
+
+            result.append(segment)
+            totalWidth += segmentCellWidth
+        }
+
+        if result.count == 0 && segments.count > 0 {
+            let segment = Segment.truncate(segment: segments.first, maxWidth: maxWidth)
+            if let segment = segment {
+                result.append(segment)
+            }
+        }
+
+        return result
+    }
+
     static func padding(count: Int) -> Segment {
         return Segment.whitespace(content: String(repeating: " ", count: count))
     }
@@ -237,7 +264,7 @@ public enum Segment: Equatable {
 
         var stack = Stack<Segment>(segments.reversed())
         while true {
-            guard let segment = stack.pop() else {
+            guard let segment: Segment = stack.pop() else {
                 break
             }
 
