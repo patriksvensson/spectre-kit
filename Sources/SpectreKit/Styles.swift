@@ -59,7 +59,7 @@ public struct Style: Equatable {
 // StyleParser
 
 struct StyleParser {
-    public static func parse(_ text: String) throws -> Style {
+    static func parse(_ text: String) throws -> Style {
         let parts = text.splitWords(options: SplitOptions.removeEmpty)
         switch self.tryParse(parts) {
         case let .success(style):
@@ -69,7 +69,7 @@ struct StyleParser {
         }
     }
 
-    public static func tryParse(_ parts: [String]) -> Result<Style, StyleParserError> {
+    static func tryParse(_ parts: [String]) -> Result<Style, StyleParserError> {
         var effectiveDecoration: Decoration = []
         var effectiveForeground: Color?
         var effectiveBackground: Color?
@@ -191,7 +191,7 @@ struct DecorationTable {
         "s": Decoration.strikethrough,
     ]
 
-    public static func getDecoration(name: String) -> Decoration? {
+    static func getDecoration(name: String) -> Decoration? {
         return self.table[name]
     }
 }

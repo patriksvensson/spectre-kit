@@ -10,22 +10,31 @@ the excellent Python library, [Rich](https://github.com/Textualize/rich).
 
 ## Example
 
+![Screenshot of example](./Resources/Screenshot.png)
+
 ```swift
 import SpectreKit
 
-// Create a console instance
-let console = Console()
-
-// Write some markup text to the console
-console.markup("[blue]Hello[/] ")
-console.markupLine("[green]World[/]!")
-
-// Render a panel to the console
 console.write(
-    Panel("[green]Hello World[/] from [yellow]Spectre[/][blue]Kit[/]")
-        .setWidth(50)
-        .setBorder(BoxBorder.double)
-        .setBorderStyle(Style(foreground: Color.rgb(128, 64, 0)))
-        .setHeader("[green]T[/][blue]e[/][yellow]s[/][red]t[/]")
-        .setHeaderAlignment(Justify.center))
+    Panel(
+        Table()
+            .addColumns("Foo", "[green]Bar[/]", "Baz")
+            .addRow(Markup("[red]abc[/]"), Text("def"), Markup("[yellow]lol[/]"))
+            .addRow(
+                Markup("[green bold]Corgi[/]"), Text("jkl"),
+                Table()
+                    .addColumn("Foo")
+                    .addColumn("Bar")
+                    .addColumn("Baz")
+                    .addRow(Markup("[red]abc[/]"), Text("def"), Markup("[yellow]lol[/]"))
+                    .addRow(Markup("[green bold]Corgi[/]"), Text("jkl"), Markup("[blue]wtf[/]"))
+                    .setBorder(TableBorder.doubleEdge)
+                    .setTitle("A table in a table in a panel")
+                    .setCaption("A [blue]caption[/]")
+            )
+            .setTitle("A table in a panel")
+            .setBorder(TableBorder.rounded)
+    )
+    .setHeader("[white]A panel[/]")
+    .setBorderColor(Color.rgb(128, 128, 0)))
 ```

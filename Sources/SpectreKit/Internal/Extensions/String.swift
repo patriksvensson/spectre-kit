@@ -11,6 +11,7 @@ extension String {
     }
 
     func substring(end: Int) -> String {
+        // TODO: Use cell width instead?
         let end = self.index(self.startIndex, offsetBy: end)
         return String(self[..<end])
     }

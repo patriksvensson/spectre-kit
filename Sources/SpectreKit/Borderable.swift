@@ -23,6 +23,11 @@ extension Borderable where Self: AnyObject {
         return self
     }
 
+    public func setBorderColor(_ color: Color?) -> Self {
+        self.borderStyle = Style(foreground: color)
+        return self
+    }
+
     public func useSafeBorder() -> Self {
         self.useSafeBorder = true
         return self

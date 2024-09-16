@@ -30,14 +30,14 @@ public class TableBorder {
         var builder = ""
         builder.append(left)
 
-        for (columnIndex, columnWidth) in widths.enumerated() {
-            var centerWidth = columnWidth
-            if let padding = columns[columnIndex].padding {
-                centerWidth += padding.left + padding.right
-            }
-            builder.append(String(repeating: center, count: centerWidth))
-            if columnIndex != widths.count {
-                builder.append(separator)
+        for (columnIndex, _, isLastColumn, columnWidth) in widths.makeSequenceIterator() {
+            let padding = columns[columnIndex].padding
+            let centerWidth =
+                padding.getSafeLeftPadding() + columnWidth + padding.getSafeRightPadding()
+            builder += String(repeating: center, count: centerWidth)
+
+            if !isLastColumn {
+                builder += separator
             }
         }
 
@@ -103,56 +103,56 @@ public class TableBorder {
     }
 
     /// Gets an invisible border.
-    static var none: TableBorder { NoTableBorder() }
+    public static var none: TableBorder { NoTableBorder() }
 
     /// Gets an ASCII border.
-    static var ascii: TableBorder { AsciiTableBorder() }
+    public static var ascii: TableBorder { AsciiTableBorder() }
 
     /// Gets an ASCII border.
-    static var ascii2: TableBorder { Ascii2TableBorder() }
+    public static var ascii2: TableBorder { Ascii2TableBorder() }
 
     /// Gets an ASCII border.
-    static var asciiDoubleHead: TableBorder { AsciiDoubleHeadTableBorder() }
+    public static var asciiDoubleHead: TableBorder { AsciiDoubleHeadTableBorder() }
 
     /// Gets a double border.
-    static var double: TableBorder { DoubleTableBorder() }
+    public static var double: TableBorder { DoubleTableBorder() }
 
     /// Gets a heavy border
-    static var heavy: TableBorder { HeavyTableBorder() }
+    public static var heavy: TableBorder { HeavyTableBorder() }
 
     /// Gets a rounded border
-    static var rounded: TableBorder { RoundedTableBorder() }
+    public static var rounded: TableBorder { RoundedTableBorder() }
 
     /// Gets a square border
-    static var square: TableBorder { SquareTableBorder() }
+    public static var square: TableBorder { SquareTableBorder() }
 
     /// Gets a square border
-    static var minimal: TableBorder { MinimalTableBorder() }
+    public static var minimal: TableBorder { MinimalTableBorder() }
 
     /// Gets a minimal border with a heavy head.
-    static var minimalHeavyHead: TableBorder { MinimalHeavyHeadTableBorder() }
+    public static var minimalHeavyHead: TableBorder { MinimalHeavyHeadTableBorder() }
 
     /// Gets a minimal border with a double header border.
-    static var minimalDoubleHead: TableBorder { MinimalDoubleHeadTableBorder() }
+    public static var minimalDoubleHead: TableBorder { MinimalDoubleHeadTableBorder() }
 
     /// Gets a simple border.
-    static var simple: TableBorder { SimpleTableBorder() }
+    public static var simple: TableBorder { SimpleTableBorder() }
 
     /// Gets a simple border with heavy lines.
-    static var simpleHeavy: TableBorder { SimpleHeavyTableBorder() }
+    public static var simpleHeavy: TableBorder { SimpleHeavyTableBorder() }
 
     /// Gets horizontal border
-    static var horizontal: TableBorder { HorizontalTableBorder() }
+    public static var horizontal: TableBorder { HorizontalTableBorder() }
 
     /// Gets a border with a heavy edge
-    static var heavyEdge: TableBorder { HeavyEdgeTableBorder() }
+    public static var heavyEdge: TableBorder { HeavyEdgeTableBorder() }
 
     /// Gets a border with a heavy header.
-    static var heavyHead: TableBorder { HeavyHeadTableBorder() }
+    public static var heavyHead: TableBorder { HeavyHeadTableBorder() }
 
     /// Gets a border with a double edge.
-    static var doubleEdge: TableBorder { DoubleEdgeTableBorder() }
+    public static var doubleEdge: TableBorder { DoubleEdgeTableBorder() }
 
     /// Gets a markdown border.
-    static var markdown: TableBorder { MarkdownTableBorder() }
+    public static var markdown: TableBorder { MarkdownTableBorder() }
 }
