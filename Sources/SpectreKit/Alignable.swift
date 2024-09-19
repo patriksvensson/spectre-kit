@@ -6,7 +6,7 @@ public protocol Alignable: AnyObject {
 
 extension Alignable where Self: AnyObject {
     /// Sets the justification
-    public func alinment(_ alignment: Justify?) -> Self {
+    public func alignment(_ alignment: Justify?) -> Self {
         self.alignment = alignment
         return self
     }
