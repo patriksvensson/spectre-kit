@@ -172,7 +172,7 @@ extension Table {
     }
 
     @discardableResult
-    public func setWidth(_ width: Int) -> Self {
+    public func width(_ width: Int) -> Self {
         self.width = width
         return self
     }
