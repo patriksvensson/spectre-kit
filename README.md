@@ -15,6 +15,8 @@ the excellent Python library, [Rich](https://github.com/Textualize/rich).
 ```swift
 import SpectreKit
 
+let console = Console()
+
 console.write(
     Panel(
         Table()
