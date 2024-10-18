@@ -11,11 +11,11 @@ console.write(
             .addRow(
                 Markup("[green bold]Corgi[/]"), Text("jkl"),
                 Table()
-                    .addColumn("Foo")
-                    .addColumn("Bar")
-                    .addColumn("Baz")
-                    .addRow(Markup("[red]abc[/]"), Text("def"), Markup("[yellow]lol[/]"))
-                    .addRow(Markup("[green bold]Corgi[/]"), Text("jkl"), Markup("[blue]wtf[/]"))
+                    .addColumn("Key")
+                    .addColumn("Value")
+                    .addRow(Markup("[red]Width[/]"), Text("\(console.width)"))
+                    .addRow(Markup("[green]Height[/]"), Text("\(console.height)"))
+                    .addRow(Markup("[yellow]Terminal[/]"), Text("\(console.terminal.type)"))
                     .setBorder(TableBorder.doubleEdge)
                     .setTitle("A table in a table in a panel")
                     .setCaption("A [blue]caption[/]")

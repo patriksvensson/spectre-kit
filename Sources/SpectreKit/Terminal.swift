@@ -46,6 +46,7 @@ public enum TerminalType {
 class DefaultTerminal: Terminal {
     var stdout: TextOutputStream
     var stderr: TextOutputStream
+    let platform: Platform
 
     public let type: TerminalType
 
@@ -56,22 +57,10 @@ class DefaultTerminal: Terminal {
             return width
         }
 
-        // Try determining using ioctl.
-        // Following code does not compile on ppc64le well. TIOCGWINSZ is
-        // defined in system ioctl.h file which needs to be used. This is
-        // a temporary arrangement and needs to be fixed.
-        #if !arch(powerpc64le)
-            var ws = winsize()
-            #if os(OpenBSD)
-                let tiocgwinsz = 0x4008_7468
-                let err = ioctl(1, UInt(tiocgwinsz), &ws)
-            #else
-                let err = ioctl(1, UInt(TIOCGWINSZ), &ws)
-            #endif
-            if err == 0 && ws.ws_col != 0 {
-                return Int(ws.ws_col)
-            }
-        #endif
+        if let size = self.platform.getTerminalSize() {
+            return size.width
+        }
+
         return 80
     }
 
@@ -82,34 +71,27 @@ class DefaultTerminal: Terminal {
             return height
         }
 
-        // Try determining using ioctl.
-        // Following code does not compile on ppc64le well. TIOCGWINSZ is
-        // defined in system ioctl.h file which needs to be used. This is
-        // a temporary arrangement and needs to be fixed.
-        #if !arch(powerpc64le)
-            var ws = winsize()
-            #if os(OpenBSD)
-                let tiocgwinsz = 0x4008_7468
-                let err = ioctl(1, UInt(tiocgwinsz), &ws)
-            #else
-                let err = ioctl(1, UInt(TIOCGWINSZ), &ws)
-            #endif
-            if err == 0 {
-                return Int(ws.ws_row)
-            }
-        #endif
+        if let size = self.platform.getTerminalSize() {
+            return size.height
+        }
+
         return 24
     }
 
     public init() {
-        stdout = FileHandleStream(handle: FileHandle.standardOutput)
-        stderr = FileHandleStream(handle: FileHandle.standardError)
+        self.stdout = FileHandleStream(handle: FileHandle.standardOutput)
+        self.stderr = FileHandleStream(handle: FileHandle.standardError)
 
-        if let t = ProcessInfo.processInfo.environment["TERM"], t == "dumb" {
-            type = .dumb
+        #if !os(Windows)
+            self.platform = PosixPlatform()
+        #else
+            self.platform = WindowsPlatform()
+        #endif
+
+        if let type = ProcessInfo.processInfo.environment["TERM"], type == "dumb" {
+            self.type = .dumb
         } else {
-            let isTTY = isatty(FileHandle.standardOutput.fileDescriptor) == 1
-            type = isTTY ? .tty : .file
+            self.type = self.platform.getTerminalType()
         }
     }
 
