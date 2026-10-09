@@ -1,9 +1,9 @@
-import XCTest
+import Testing
 
 @testable import SpectreKit
 
-final class GridTests: XCTestCase {
-    func testRenderGrid () {
+struct GridTests {
+    @Test func renderGrid() {
         // Given
         let console = TestConsole()
         let grid = Grid()
@@ -17,15 +17,14 @@ final class GridTests: XCTestCase {
         let result = console.write(grid)
 
         // Then
-        XCTAssertEqual(
-            result,
-            "Foo   Bar     \n" +
-            "              \n" +
-            "Qux   Corgi   \n" +
-            "              \n")
+        #expect(
+            result == "Foo   Bar     \n" + 
+                      "              \n" + 
+                      "Qux   Corgi   \n" + 
+                      "              \n")
     }
 
-    func testRenderJustifiedGrid () {
+    @Test func renderJustifiedGrid() {
         // Given
         let console = TestConsole()
         let grid = Grid()
@@ -40,14 +39,13 @@ final class GridTests: XCTestCase {
         let result = console.write(grid)
 
         // Then
-        XCTAssertEqual(
-            result,
-            "   Foo    Bar     Baz     \n" +
-            "   Qux   Corgi    Waldo   \n" +
-            "Grault   Garply   Fred    \n")
+        #expect(
+            result == "   Foo    Bar     Baz     \n" + 
+                      "   Qux   Corgi    Waldo   \n" + 
+                      "Grault   Garply   Fred    \n")
     }
 
-    func testRenderPaddedGrid () {
+    @Test func renderPaddedGrid() {
         // Given
         let console = TestConsole()
         let grid = Grid()
@@ -62,10 +60,46 @@ final class GridTests: XCTestCase {
         let result = console.write(grid)
 
         // Then
-        XCTAssertEqual(
-            result,
-            "   Foo    Bar    Baz   \n" +
-            "   Qux    Corgi  Waldo \n" +
-            "   Grault Garply Fred  \n")
+        #expect(
+            result == "   Foo    Bar    Baz   \n" + 
+                      "   Qux    Corgi  Waldo \n" + 
+                      "   Grault Garply Fred  \n")
+    }
+
+    @Test func renderColumnWithEmptyCells() {
+        // Given
+        let console = TestConsole()
+        let grid = Grid()
+        grid.addColumn(GridColumn().noWrap())
+        grid.addColumn(GridColumn().padLeft(2))
+        grid.addRow("Foo", "")
+        grid.addRow("", "Bar")
+
+        // When
+        let result = console.write(grid)
+
+        // Then
+        #expect(result == "Foo         \n" + 
+                          "        Bar \n")
+    }
+
+    @Test(.bug(id: 14), .disabled())
+    func renderColumnWithMissingCells() {
+        // Given
+        let console = TestConsole()
+        let grid = Grid()
+        grid.addColumn(GridColumn().noWrap())
+        grid.addColumn(GridColumn().padLeft(2))
+        grid.addRow("Options:")
+        grid.addRow("--help", "Prints help")
+        grid.addRow("--verbose", "Verbose mode")
+
+        // When
+        let result = console.write(grid)
+
+        // Then
+        #expect(result == "Options:                   \n" + 
+                          "--help        Prints help  \n" + 
+                          "--verbose     Verbose mode \n")
     }
 }

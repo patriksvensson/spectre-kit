@@ -1,44 +1,44 @@
-import XCTest
+import Testing
 
 @testable import SpectreKit
 
-final class StringTests: XCTestCase {
-    func testSplitWords() throws {
+struct StringTests {
+    @Test func splitWords() throws {
         // Given
         let result = "Hello World!".splitWords()
         // When
-        XCTAssertEqual(result.count, 3)
-        XCTAssertEqual(result[0], "Hello")
-        XCTAssertEqual(result[1], " ")
-        XCTAssertEqual(result[2], "World!")
+        #expect(result.count == 3)
+        #expect(result[0] == "Hello")
+        #expect(result[1] == " ")
+        #expect(result[2] == "World!")
     }
 
-    func testSplitWordsAndThrowAwayWhitespace() throws {
+    @Test func splitWordsAndThrowAwayWhitespace() throws {
         // Given
         let result = "Hello World!".splitWords(options: .removeEmpty)
         // When
-        XCTAssertEqual(result.count, 2)
-        XCTAssertEqual(result[0], "Hello")
-        XCTAssertEqual(result[1], "World!")
+        #expect(result.count == 2)
+        #expect(result[0] == "Hello")
+        #expect(result[1] == "World!")
     }
 
-    func testIfStringIsEmpty() {
+    @Test func isStringEmpty() {
         // With spaces
-        XCTAssertEqual("   ".isWhitespace(), true)
+        #expect("   ".isWhitespace())
         // With tabs
-        XCTAssertEqual("        ".isWhitespace(), true)
+        #expect("        ".isWhitespace())
         // With spaces and tabs
-        XCTAssertEqual("      ".isWhitespace(), true)
+        #expect("      ".isWhitespace())
         // With a letter
-        XCTAssertEqual("  a".isWhitespace(), false)
+        #expect(!"  a".isWhitespace())
     }
 
-    func testMeasurementOfUnicode() throws {
+    @Test func measureUnicode() throws {
         // Given
         let paragraph = "コ"
         // When
         let result = paragraph.cellCount()
         // Then
-        XCTAssertEqual(result, 2)
+        #expect(result == 2)
     }
 }

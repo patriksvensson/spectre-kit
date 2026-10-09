@@ -1,9 +1,9 @@
-import XCTest
+import Testing
 
 @testable import SpectreKit
 
-final class PanelTests: XCTestCase {
-    func testRenderPanel() {
+struct PanelTests {
+    @Test func renderPanel() {
         // Given
         let console = TestConsole()
         let panel = Panel("Hello World")
@@ -12,17 +12,16 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌─────────────┐
-            │ Hello World │
-            └─────────────┘
+        #expect(
+            result == """
+                ┌─────────────┐
+                │ Hello World │
+                └─────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelZeroPadding() {
+    @Test func renderPanelZeroPadding() {
         // Given
         let console = TestConsole()
         let panel = Panel("Hello World")
@@ -32,17 +31,16 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌───────────┐
-            │Hello World│
-            └───────────┘
+        #expect(
+            result == """
+                ┌───────────┐
+                │Hello World│
+                └───────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithPadding() {
+    @Test func renderPanelWithPadding() {
         // Given
         let console = TestConsole()
         let panel = Panel("Hello World")
@@ -52,20 +50,19 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌───────────────────┐
-            │                   │
-            │   Hello World     │
-            │                   │
-            │                   │
-            └───────────────────┘
+        #expect(
+            result == """
+                ┌───────────────────┐
+                │                   │
+                │   Hello World     │
+                │                   │
+                │                   │
+                └───────────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithHeader() {
+    @Test func renderPanelWithHeader() {
         // Given
         let console = TestConsole()
         let panel = Panel("Hello World")
@@ -75,17 +72,16 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌─Greeting────┐
-            │ Hello World │
-            └─────────────┘
+        #expect(
+            result == """
+                ┌─Greeting────┐
+                │ Hello World │
+                └─────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithCenteredHeader() {
+    @Test func renderPanelWithCenteredHeader() {
         // Given
         let console = TestConsole()
         let panel = Panel("Hello World")
@@ -96,17 +92,16 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌──Greeting───┐
-            │ Hello World │
-            └─────────────┘
+        #expect(
+            result == """
+                ┌──Greeting───┐
+                │ Hello World │
+                └─────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithRightAlignedHeader() {
+    @Test func renderPanelWithRightAlignedHeader() {
         // Given
         let console = TestConsole()
         let panel = Panel("Hello World")
@@ -117,17 +112,16 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌────Greeting─┐
-            │ Hello World │
-            └─────────────┘
+        #expect(
+            result == """
+                ┌────Greeting─┐
+                │ Hello World │
+                └─────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithRightHeaderThatWillNotFit() {
+    @Test func renderPanelWithRightHeaderThatWillNotFit() {
         // Given
         let console = TestConsole(width: 10)
         let panel = Panel("Hello World")
@@ -138,18 +132,17 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌─Greet…─┐
-            │ Hello  │
-            │ World  │
-            └────────┘
+        #expect(
+            result == """
+                ┌─Greet…─┐
+                │ Hello  │
+                │ World  │
+                └────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithUnicode() {
+    @Test func renderPanelWithUnicode() {
         // Given
         let console = TestConsole()
         let panel = Panel(" \n💩\n ")
@@ -158,19 +151,18 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌────┐
-            │    │
-            │ 💩 │
-            │    │
-            └────┘
+        #expect(
+            result == """
+                ┌────┐
+                │    │
+                │ 💩 │
+                │    │
+                └────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithExplicitLineEndings() {
+    @Test func renderPanelWithExplicitLineEndings() {
         // Given
         let console = TestConsole()
         let panel = Panel("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦")
@@ -179,21 +171,20 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌───────────────────────┐
-            │ I heard you like 📦   │
-            │                       │
-            │                       │
-            │                       │
-            │ So I put a 📦 in a 📦 │
-            └───────────────────────┘
+        #expect(
+            result == """
+                ┌───────────────────────┐
+                │ I heard you like 📦   │
+                │                       │
+                │                       │
+                │                       │
+                │ So I put a 📦 in a 📦 │
+                └───────────────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithExplicitWidth() {
+    @Test func renderPanelWithExplicitWidth() {
         // Given
         let console = TestConsole()
         let panel = Panel("Hello World")
@@ -203,17 +194,16 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌───────────────────────┐
-            │ Hello World           │
-            └───────────────────────┘
+        #expect(
+            result == """
+                ┌───────────────────────┐
+                │ Hello World           │
+                └───────────────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithMaxWidthIfExplicitWidthIsTooLarge() {
+    @Test func renderPanelWithMaxWidthIfExplicitWidthIsTooLarge() {
         // Given
         let console = TestConsole(width: 20)
         let panel = Panel("Hello World")
@@ -223,17 +213,16 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌──────────────────┐
-            │ Hello World      │
-            └──────────────────┘
+        #expect(
+            result == """
+                ┌──────────────────┐
+                │ Hello World      │
+                └──────────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithCenteredChild() {
+    @Test func renderPanelWithCenteredChild() {
         // Given
         let console = TestConsole()
         let text = Text("Hello World")
@@ -245,17 +234,16 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌──────────────────────────────────────┐
-            │             Hello World              │
-            └──────────────────────────────────────┘
+        #expect(
+            result == """
+                ┌──────────────────────────────────────┐
+                │             Hello World              │
+                └──────────────────────────────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithCJK() {
+    @Test func renderPanelWithCJK() {
         // Given
         let console = TestConsole()
         let panel = Panel("测试")
@@ -266,17 +254,16 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌─测试─┐
-            │ 测试 │
-            └──────┘
+        #expect(
+            result == """
+                ┌─测试─┐
+                │ 测试 │
+                └──────┘
 
-            """)
+                """)
     }
 
-    func testRenderPanelWithWrappedText() {
+    @Test func renderPanelWithWrappedText() {
         // Given
         let console = TestConsole.init(width: 25)
         let panel = Panel("Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")
@@ -285,15 +272,14 @@ final class PanelTests: XCTestCase {
         let result = console.write(panel)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌───────────────────────┐
-            │ Lorem ipsum dolor sit │
-            │ amet, consectetur     │
-            │ adipiscing elit.      │
-            └───────────────────────┘
+        #expect(
+            result == """
+                ┌───────────────────────┐
+                │ Lorem ipsum dolor sit │
+                │ amet, consectetur     │
+                │ adipiscing elit.      │
+                └───────────────────────┘
 
-            """)
+                """)
     }
 }

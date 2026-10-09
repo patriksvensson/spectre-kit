@@ -1,9 +1,9 @@
-import XCTest
+import Testing
 
 @testable import SpectreKit
 
-final class TableTests: XCTestCase {
-    func testRenderTable() {
+struct TableTests {
+    @Test func renderTable() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -15,20 +15,19 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌────────┬────────┬───────┐
-            │ Foo    │ Bar    │ Baz   │
-            ├────────┼────────┼───────┤
-            │ Qux    │ Corgi  │ Waldo │
-            │ Grault │ Garply │ Fred  │
-            └────────┴────────┴───────┘
+        #expect(
+            result == """
+                ┌────────┬────────┬───────┐
+                │ Foo    │ Bar    │ Baz   │
+                ├────────┼────────┼───────┤
+                │ Qux    │ Corgi  │ Waldo │
+                │ Grault │ Garply │ Fred  │
+                └────────┴────────┴───────┘
 
-            """)
+                """)
     }
 
-    func testRenderRowSeparators() {
+    @Test func renderRowSeparators() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -41,21 +40,20 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌────────┬────────┬───────┐
-            │ Foo    │ Bar    │ Baz   │
-            ├────────┼────────┼───────┤
-            │ Qux    │ Corgi  │ Waldo │
-            ├────────┼────────┼───────┤
-            │ Grault │ Garply │ Fred  │
-            └────────┴────────┴───────┘
+        #expect(
+            result == """
+                ┌────────┬────────┬───────┐
+                │ Foo    │ Bar    │ Baz   │
+                ├────────┼────────┼───────┤
+                │ Qux    │ Corgi  │ Waldo │
+                ├────────┼────────┼───────┤
+                │ Grault │ Garply │ Fred  │
+                └────────┴────────┴───────┘
 
-            """)
+                """)
     }
 
-    func testRenderRowSeparatorsWithoutheaders() {
+    @Test func renderRowSeparatorsWithoutheaders() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -69,19 +67,18 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌────────┬────────┬───────┐
-            │ Qux    │ Corgi  │ Waldo │
-            ├────────┼────────┼───────┤
-            │ Grault │ Garply │ Fred  │
-            └────────┴────────┴───────┘
+        #expect(
+            result == """
+                ┌────────┬────────┬───────┐
+                │ Qux    │ Corgi  │ Waldo │
+                ├────────┼────────┼───────┤
+                │ Grault │ Garply │ Fred  │
+                └────────┴────────┴───────┘
 
-            """)
+                """)
     }
 
-    func testRenderTableWithEACharacters() {
+    @Test func renderTableWithEACharacters() {
         // Given
         let console = TestConsole(width: 48)
         let table = Table()
@@ -93,22 +90,21 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌───────────────┬───────────────┬──────────────┐
-            │ Foo           │ Bar           │ Baz          │
-            ├───────────────┼───────────────┼──────────────┤
-            │ 中文          │ 日本語        │ 한국어       │
-            │ 这是中文测试  │ これは日本語  │ 이것은한국어 │
-            │ 字符串        │ のテスト文字  │ 테스트문자열 │
-            │               │ 列です        │ 입니다       │
-            └───────────────┴───────────────┴──────────────┘
+        #expect(
+            result == """
+                ┌───────────────┬───────────────┬──────────────┐
+                │ Foo           │ Bar           │ Baz          │
+                ├───────────────┼───────────────┼──────────────┤
+                │ 中文          │ 日本語        │ 한국어       │
+                │ 这是中文测试  │ これは日本語  │ 이것은한국어 │
+                │ 字符串        │ のテスト文字  │ 테스트문자열 │
+                │               │ 列です        │ 입니다       │
+                └───────────────┴───────────────┴──────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderColumnJustifications() {
+    @Test func renderColumnJustifications() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -123,21 +119,20 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌────────┬────────────────┬─────────────┐
-            │ Foo    │      Bar       │         Baz │
-            ├────────┼────────────────┼─────────────┤
-            │ Qux    │ Dolor sit amet │       Waldo │
-            ├────────┼────────────────┼─────────────┤
-            │ Grault │     Garply     │ Lorem ipsum │
-            └────────┴────────────────┴─────────────┘
+        #expect(
+            result == """
+                ┌────────┬────────────────┬─────────────┐
+                │ Foo    │      Bar       │         Baz │
+                ├────────┼────────────────┼─────────────┤
+                │ Qux    │ Dolor sit amet │       Waldo │
+                ├────────┼────────────────┼─────────────┤
+                │ Grault │     Garply     │ Lorem ipsum │
+                └────────┴────────────────┴─────────────┘
 
-            """)
+                """)
     }
 
-    func testExpandToAvailableSpace() {
+    @Test func expandToAvailableSpace() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -150,20 +145,19 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌──────────────────────────┬───────────────────────────┬───────────────────────┐
-            │ Foo                      │ Bar                       │ Baz                   │
-            ├──────────────────────────┼───────────────────────────┼───────────────────────┤
-            │ Qux                      │ Corgi                     │ Waldo                 │
-            │ Grault                   │ Garply                    │ Fred                  │
-            └──────────────────────────┴───────────────────────────┴───────────────────────┘
+        #expect(
+            result == """
+                ┌──────────────────────────┬───────────────────────────┬───────────────────────┐
+                │ Foo                      │ Bar                       │ Baz                   │
+                ├──────────────────────────┼───────────────────────────┼───────────────────────┤
+                │ Qux                      │ Corgi                     │ Waldo                 │
+                │ Grault                   │ Garply                    │ Fred                  │
+                └──────────────────────────┴───────────────────────────┴───────────────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderFooters() {
+    @Test func renderFooters() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -177,22 +171,21 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌────────┬────────┬───────┐
-            │    Foo │ Bar    │ Baz   │
-            ├────────┼────────┼───────┤
-            │    Qux │ Corgi  │ Waldo │
-            │ Grault │ Garply │ Fred  │
-            ├────────┼────────┼───────┤
-            │    Oof │        │ Zab   │
-            └────────┴────────┴───────┘
+        #expect(
+            result == """
+                ┌────────┬────────┬───────┐
+                │    Foo │ Bar    │ Baz   │
+                ├────────┼────────┼───────┤
+                │    Qux │ Corgi  │ Waldo │
+                │ Grault │ Garply │ Fred  │
+                ├────────┼────────┼───────┤
+                │    Oof │        │ Zab   │
+                └────────┴────────┴───────┘
 
-            """)
+                """)
     }
 
-    func testRenderTableWrappedInPanel() {
+    @Test func renderTableWrappedInPanel() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -208,25 +201,24 @@ final class TableTests: XCTestCase {
         )
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌───────────────────────────────────┐
-            │ +-------------------------------+ │
-            │ | ┌──────────┬────────┬───────┐ | │
-            │ | │ Foo      │ Bar    │ Baz   │ | │
-            │ | ├──────────┼────────┼───────┤ | │
-            │ | │ Qux      │ Corgi  │ Waldo │ | │
-            │ | │ Quuuuuux │        │       │ | │
-            │ | │ Grault   │ Garply │ Fred  │ | │
-            │ | └──────────┴────────┴───────┘ | │
-            │ +-------------------------------+ │
-            └───────────────────────────────────┘
+        #expect(
+            result == """
+                ┌───────────────────────────────────┐
+                │ +-------------------------------+ │
+                │ | ┌──────────┬────────┬───────┐ | │
+                │ | │ Foo      │ Bar    │ Baz   │ | │
+                │ | ├──────────┼────────┼───────┤ | │
+                │ | │ Qux      │ Corgi  │ Waldo │ | │
+                │ | │ Quuuuuux │        │       │ | │
+                │ | │ Grault   │ Garply │ Fred  │ | │
+                │ | └──────────┴────────┴───────┘ | │
+                │ +-------------------------------+ │
+                └───────────────────────────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderMultipleCellLines() {
+    @Test func renderMultipleCellLines() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -238,21 +230,20 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌────────┬────────┬───────┐
-            │ Foo    │ Bar    │ Baz   │
-            ├────────┼────────┼───────┤
-            │ Qux    │ Corgi  │ Waldo │
-            │ Quuux  │        │       │
-            │ Grault │ Garply │ Fred  │
-            └────────┴────────┴───────┘
+        #expect(
+            result == """
+                ┌────────┬────────┬───────┐
+                │ Foo    │ Bar    │ Baz   │
+                ├────────┼────────┼───────┤
+                │ Qux    │ Corgi  │ Waldo │
+                │ Quuux  │        │       │
+                │ Grault │ Garply │ Fred  │
+                └────────┴────────┴───────┘
 
-            """)
+                """)
     }
 
-    func testRenderCellPadding() {
+    @Test func renderCellPadding() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -265,21 +256,20 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌────────┬────────┬──────────────┐
-            │ Foo    │ Bar    │      Baz     │
-            ├────────┼────────┼──────────────┤
-            │ Qux    │ Corgi  │      Waldo   │
-            │ Quuux  │        │              │
-            │ Grault │ Garply │      Fred    │
-            └────────┴────────┴──────────────┘
+        #expect(
+            result == """
+                ┌────────┬────────┬──────────────┐
+                │ Foo    │ Bar    │      Baz     │
+                ├────────┼────────┼──────────────┤
+                │ Qux    │ Corgi  │      Waldo   │
+                │ Quuux  │        │              │
+                │ Grault │ Garply │      Fred    │
+                └────────┴────────┴──────────────┘
 
-            """)
+                """)
     }
 
-    func testRenderNoRows() {
+    @Test func renderNoRows() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -289,17 +279,16 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌─────┬─────┬─────┐
-            │ Foo │ Bar │ Baz │
-            └─────┴─────┴─────┘
+        #expect(
+            result == """
+                ┌─────┬─────┬─────┐
+                │ Foo │ Bar │ Baz │
+                └─────┴─────┴─────┘
 
-            """)
+                """)
     }
 
-    func testRenderEmptyColumn() {
+    @Test func renderEmptyColumn() {
         // Given
         let console = TestConsole()
         let table = Table()
@@ -311,20 +300,19 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ┌──┬───┐
-            │  │   │
-            ├──┼───┤
-            │  │ A │
-            │  │ B │
-            └──┴───┘
+        #expect(
+            result == """
+                ┌──┬───┐
+                │  │   │
+                ├──┼───┤
+                │  │ A │
+                │  │ B │
+                └──┴───┘
 
-            """)
+                """)
     }
 
-    func testRenderFold() {
+    @Test func renderFold() {
         // Given
         let console = TestConsole(width: 30)
         let table = Table()
@@ -337,30 +325,29 @@ final class TableTests: XCTestCase {
             Panel(table).setBorder(BoxBorder.double))
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-            ╔════════════════════════════╗
-            ║ ┌────────┬───────┬───────┐ ║
-            ║ │ Foo    │ Bar   │ Baz   │ ║
-            ║ ├────────┼───────┼───────┤ ║
-            ║ │ Qux    │ Corgi │ Waldo │ ║
-            ║ │ With A │       │       │ ║
-            ║ │ Long   │       │       │ ║
-            ║ │ Descri │       │       │ ║
-            ║ │ ption  │       │       │ ║
-            ║ │ Grault │ Garpl │ Fred  │ ║
-            ║ │        │ y     │ On A  │ ║
-            ║ │        │       │ Long  │ ║
-            ║ │        │       │ Long  │ ║
-            ║ │        │       │ Walk  │ ║
-            ║ └────────┴───────┴───────┘ ║
-            ╚════════════════════════════╝
+        #expect(
+            result == """
+                ╔════════════════════════════╗
+                ║ ┌────────┬───────┬───────┐ ║
+                ║ │ Foo    │ Bar   │ Baz   │ ║
+                ║ ├────────┼───────┼───────┤ ║
+                ║ │ Qux    │ Corgi │ Waldo │ ║
+                ║ │ With A │       │       │ ║
+                ║ │ Long   │       │       │ ║
+                ║ │ Descri │       │       │ ║
+                ║ │ ption  │       │       │ ║
+                ║ │ Grault │ Garpl │ Fred  │ ║
+                ║ │        │ y     │ On A  │ ║
+                ║ │        │       │ Long  │ ║
+                ║ │        │       │ Long  │ ║
+                ║ │        │       │ Walk  │ ║
+                ║ └────────┴───────┴───────┘ ║
+                ╚════════════════════════════╝
 
-            """)
+                """)
     }
 
-    func testRenderRightAligned() {
+    @Test func renderRightAligned() {
         // Given
         let console = TestConsole(width: 40)
         let table = Table().rightAligned()
@@ -372,20 +359,19 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-                         ┌────────┬────────┬───────┐
-                         │ Foo    │ Bar    │ Baz   │
-                         ├────────┼────────┼───────┤
-                         │ Qux    │ Corgi  │ Waldo │
-                         │ Grault │ Garply │ Fred  │
-                         └────────┴────────┴───────┘
+        #expect(
+            result == """
+                             ┌────────┬────────┬───────┐
+                             │ Foo    │ Bar    │ Baz   │
+                             ├────────┼────────┼───────┤
+                             │ Qux    │ Corgi  │ Waldo │
+                             │ Grault │ Garply │ Fred  │
+                             └────────┴────────┴───────┘
 
-            """)
+                """)
     }
 
-    func testRenderLeftAligned() {
+    @Test func renderLeftAligned() {
         // Given
         let console = TestConsole(width: 40)
         let table = Table().centered()
@@ -397,16 +383,15 @@ final class TableTests: XCTestCase {
         let result = console.write(table)
 
         // Then
-        XCTAssertEqual(
-            result,
-            """
-                  ┌────────┬────────┬───────┐       
-                  │ Foo    │ Bar    │ Baz   │       
-                  ├────────┼────────┼───────┤       
-                  │ Qux    │ Corgi  │ Waldo │       
-                  │ Grault │ Garply │ Fred  │       
-                  └────────┴────────┴───────┘       
+        #expect(
+            result == """
+                      ┌────────┬────────┬───────┐       
+                      │ Foo    │ Bar    │ Baz   │       
+                      ├────────┼────────┼───────┤       
+                      │ Qux    │ Corgi  │ Waldo │       
+                      │ Grault │ Garply │ Fred  │       
+                      └────────┴────────┴───────┘       
 
-            """)
+                """)
     }
 }

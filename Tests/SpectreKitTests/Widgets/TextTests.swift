@@ -1,29 +1,27 @@
-import XCTest
+import Testing
 
 @testable import SpectreKit
 
-final class TextTests: XCTestCase {
-    func test_ShouldReturnCorrectNumberOfLines() {
-        let testData = [
-            ("Hello", 1),
-            ("Hello\nWorld", 2),
-        ]
+struct TextTests {
+    private static var returnCorrectNumberOfLinesTests = [
+        ("Hello", 1),
+        ("Hello\nWorld", 2),
+    ]
 
-        for (input, expected) in testData {
-            XCTContext.runActivity(named: "Number of lines: \(expected)") { _ in
-                // Given
-                let text = Text(input)
+    @Test(arguments: returnCorrectNumberOfLinesTests)
+    func shouldReturnCorrectNumberOfLines(_ test: (String, Int)) {
+        let (input, expected) = test
+        // Given
+        let text = Text(input)
 
-                // When
-                let result = text.lineCount
+        // When
+        let result = text.lineCount
 
-                // Then
-                XCTAssertEqual(expected, result)
-            }
-        }
+        // Then
+        #expect(expected == result)
     }
 
-    func test_LongestWordIsMinimumWidth() {
+    @Test func longestWordIsMinimumWidth() {
         // Given
         let text = Text("Foo Bar Baz\nQux\nLol mobile")
 
@@ -33,10 +31,10 @@ final class TextTests: XCTestCase {
             maxWidth: 80)
 
         // Then
-        XCTAssertEqual(6, result.min)
+        #expect(6 == result.min)
     }
 
-    func test_LongestLineIsMaximumWidth() {
+    @Test func longestLineIsMaximumWidth() {
         // Given
         let text = Text("Foo Bar Baz\nQux\nLol mobile")
 
@@ -46,10 +44,10 @@ final class TextTests: XCTestCase {
             maxWidth: 80)
 
         // Then
-        XCTAssertEqual(11, result.max)
+        #expect(11 == result.max)
     }
 
-    func test_ShouldWriteLineBreaks() {
+    @Test func shouldWriteLineBreaks() {
         // Given
         let console = TestConsole()
         let text = Text("Hello\n\nWorld\n\n")
@@ -58,10 +56,10 @@ final class TextTests: XCTestCase {
         let result = console.write(text)
 
         // Then
-        XCTAssertEqual("Hello\n\nWorld\n\n", result)
+        #expect("Hello\n\nWorld\n\n" == result)
     }
 
-    func test_ShouldNormalizeLineBreaksWithCarriageReturn() {
+    @Test func shouldNormalizeLineBreaksWithCarriageReturn() {
         // Given
         let console = TestConsole()
         let text = Text("Hello\r\n\r\nWorld\r\n\r\n")
@@ -70,10 +68,10 @@ final class TextTests: XCTestCase {
         let result = console.write(text)
 
         // Then
-        XCTAssertEqual("Hello\n\nWorld\n\n", result)
+        #expect("Hello\n\nWorld\n\n" == result)
     }
 
-    func test_ShouldSplitUnstyledTextToNewLinesIfWidthExceedsConsoleWidth() {
+    @Test func shouldSplitUnstyledTextToNewLinesIfWidthExceedsConsoleWidth() {
         // Given
         let console = TestConsole(width: 10)
         let text = Text("Hello Sweet Nice World")
@@ -82,10 +80,10 @@ final class TextTests: XCTestCase {
         let result = console.write(text)
 
         // Then
-        XCTAssertEqual("Hello \nSweet Nice\nWorld", result)
+        #expect("Hello \nSweet Nice\nWorld" == result)
     }
 
-    func test_ShouldFoldText() {
+    @Test func shouldFoldText() {
         // Given
         let console = TestConsole(width: 14)
         let text = Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
@@ -95,10 +93,10 @@ final class TextTests: XCTestCase {
         let result = console.write(text)
 
         // Then
-        XCTAssertEqual("foo \npneumonoultram\nicroscopicsili\ncovolcanoconio\nsis bar qux", result)
+        #expect("foo \npneumonoultram\nicroscopicsili\ncovolcanoconio\nsis bar qux" == result)
     }
 
-    func test_ShouldCropText() {
+    @Test func shouldCropText() {
         // Given
         let console = TestConsole(width: 14)
         let text = Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
@@ -108,10 +106,10 @@ final class TextTests: XCTestCase {
         let result = console.write(text)
 
         // Then
-        XCTAssertEqual("foo \npneumonoultram\nbar qux", result)
+        #expect("foo \npneumonoultram\nbar qux" == result)
     }
 
-    func test_ShouldOverflowTextWithEllipsis() {
+    @Test func shouldOverflowTextWithEllipsis() {
         // Given
         let console = TestConsole(width: 14)
         let text = Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
@@ -121,6 +119,6 @@ final class TextTests: XCTestCase {
         let result = console.write(text)
 
         // Then
-        XCTAssertEqual("foo \npneumonoultra…\nbar qux", result)
+        #expect("foo \npneumonoultra…\nbar qux" == result)
     }
 }
